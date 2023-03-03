@@ -1,4 +1,4 @@
-# thepetproject
+# The Pet Project - Copyright © Lab 1A MMXXIII
 
 # For Devs
 
