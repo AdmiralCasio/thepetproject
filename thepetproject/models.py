@@ -27,7 +27,7 @@ class Post(models.Model):
     
     
     def __str__(self):
-        return self.caption
+        return str(self.post_id)
     
     def get_correct_directory(self):
         return os.path.join(self.user.username, "/posts")
@@ -44,7 +44,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.text
+        return str(self.comment_id)
     
     
 class UserHasLikedPost(models.Model):
@@ -52,13 +52,13 @@ class UserHasLikedPost(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.user + self.post
+        return str(self.user) + " " + str(self.post)
     
 class UserHasLikedComment(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.user + self.comment
+        return str(self.user) + " " + str(self.comment)
 
     
