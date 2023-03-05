@@ -86,8 +86,9 @@ def populate():
         
     for u in UserProfile.objects.all():
         for p in Post.objects.filter(user=u):
+            print(f"{u} posted {p} with caption {p.caption} and comments:")
             for c in Comment.objects.filter(post=p):
-                print(f"{u} posted {p} with comment {c}")
+               print(f"- {c}: {c.text} by {c.user}")
 
 def add_user(username, password, name, date_joined):
     user = User.objects.get_or_create(username=username, password=password)[0]
