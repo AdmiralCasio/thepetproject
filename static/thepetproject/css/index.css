@@ -1,0 +1,19 @@
+.post{
+    color: #236807;
+    border: 2px black solid;
+}
+
+#posts{
+    
+}
+
+#welcometext{
+    background-color: #236807;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    width: fit-content;
+    margin: auto;
+    padding: 20px;
+
+}
