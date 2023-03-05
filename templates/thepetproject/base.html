@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
     <head>
         <title>The Pet Project - {% block title_append %} Page name goes here {% endblock %}</title>
-        <link rel="stylesheet" href="base.css" type="text/css">
+        <link rel="stylesheet" href="{% static 'thepetproject/css/base.css' %}" type="text/css">
     </head>
     <body>
         <header>
@@ -21,7 +22,7 @@
         <div class="sidebar">
             <button>Homepage</button>
             <button>View Posts</button>
-            {% if user.logged_in}
+            {% if user.logged_in %}
             <button>Upload Post</button>
             {% endif %}
         </div>

@@ -1,4 +1,31 @@
-<!DOCTYPE html>
-<html>
-    <h1>The Pet Project</h1>
-</html>
+{% extends "thepetproject/base.html" %}
+{% load staticfiles %}
+{% block title_append %}
+Homepage
+{% endblock %}
+
+{% block main_content %}
+<div id="welcometext">
+<p>Welcome to The Pet Project, the perfect place to upload and share pictures of your animal friends.</p>
+</div>
+
+<div id="posts">
+
+{% for post in posts %}
+    <div class="post">
+    <img src="{{ post.image }}" alt="An image of someones pet">
+    <h4>{{ post.user.name }}</h4>
+    <h4>{{ post.date_posted }}</h4>
+    <p> {{ post.caption }}</p>
+    <h4>Likes: {{ post.likes }}</h4>
+    <h4>Comments: {{ post.number_of_comments }}</h4>
+
+
+
+    </div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
