@@ -59,34 +59,34 @@ View Post
 
 <div id = "post">
     <div id="title_and_image">
-    <h1>{% post.title %}</h1>
-    <img src="{% post.image %}" alt="Post Picture">
+    <h1>{{ post.title }}</h1>
+    <img src="{{ post.image }}" alt="Post Picture">
     </div>
     <div>
-        <p>{% post.caption %}</p>
+        <p>{{ post.caption }}</p>
     </div>
     <div id="like_and_comment">
-            {% if user.logged_in %}
+            {% if user.is_authenticated %}
             <button class="like_and_comment_buttons" onclick="likePost">Like</button>
             <button class="like_and_comment_buttons" onClick="commentPost">Comment</button>
             {% endif %}
-        <p id="like_and_comment_info">{% post.number_of_comments %} comments     {% post.likes %} Likes</p>
+        <p id="like_and_comment_info">{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>
     </div>
 </div>
     <div id="comments_section">
         <h1>Comments</h1>
         <div id="comment_info">
-        <p id="user_info">{% comment.user.name %} (@{% comment.user.username %})</p>
-        <p id="time_info">{% comment.date_posted %} {% comment.time_posted %}</p>
+        <p id="user_info">{{ comment.user.name }} (@{{ comment.user.username }})</p>
+        <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
         </div>
         <div id="comment_text">
-        <p>{% comment.text %}</p>
+        <p>{{ comment.text }}</p>
         </div>
         <div id = "like_comment">
-            {% if user.logged_in %}
+            {% if user.is_authenticated %}
                 <button onclick="likeComment">Like</button>
             {% endif %}
-            <p>{% comment.likes %} Likes<p>
+            <p>{{ comment.likes }} Likes<p>
         </div>
     </div>
 

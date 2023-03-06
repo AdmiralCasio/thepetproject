@@ -10,7 +10,7 @@
             <h1>The Pet Project</h1>
             </div>
             <div id="login">
-            {% if user.logged_in %}
+            {% if user.is_authenticated %}
             <button>Logout</button>
             <img src="img_link" alt="Profile picture">
             {% else %}
@@ -21,7 +21,7 @@
         <div class="sidebar">
             <button>Homepage</button>
             <button>View Posts</button>
-            {% if user.logged_in}
+            {% if user.is_authenticated %}
             <button>Upload Post</button>
             {% endif %}
         </div>
