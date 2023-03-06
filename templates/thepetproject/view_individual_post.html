@@ -1,0 +1,93 @@
+{% extends base.html %}
+
+{% block title_append %}
+View Post
+{% endblock %}
+<head>
+    <style>
+        #post{border-color: black;
+            border-style: solid;
+            }
+        #title_and_image{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: none;
+            border-bottom-style: solid;}
+        #like_and_comment{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: solid;
+            border-bottom-style: none;}
+        .like_and_comment_buttons{
+                                margin-right: 10px;
+                                margin-left: 20px;
+                                margin-top: 20px;
+                                margin-bottom: 20px;}
+        #like_and_comment_info{
+            float: right;
+            margin-right: 10px;}
+        #comments_section{
+            clear: both;
+            border-color: black;
+            border-style: solid;
+            margin-top: 20px;
+            margin-bottom: 20px;}
+        #comment_info{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: none;
+            border-bottom-style: solid;}
+        #like_comment{
+            border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: solid;
+            border-bottom-style: none;}
+        #like_comment button{margin-left: 20px;
+                            margin-top: 20px;
+                            margin-bottom: 20px;}
+        #like_comment p{float: right;
+                        margin-right: 10px;}
+        #user_info{float:left;}
+        #time_info{float:right;
+                    margin-right: 10px;}
+        #comment_text{clear: both;
+                    border-top-style: solid;}
+    </style>
+</head>
+{% block main_content %}
+
+<div id = "post">
+    <div id="title_and_image">
+    <h1>{% post.title %}</h1>
+    <img src="{% post.image %}" alt="Post Picture">
+    </div>
+    <div>
+        <p>{% post.caption %}</p>
+    </div>
+    <div id="like_and_comment">
+            {% if user.logged_in %}
+            <button class="like_and_comment_buttons" onclick="likePost">Like</button>
+            <button class="like_and_comment_buttons" onClick="commentPost">Comment</button>
+            {% endif %}
+        <p id="like_and_comment_info">{% post.number_of_comments %} comments     {% post.likes %} Likes</p>
+    </div>
+</div>
+    <div id="comments_section">
+        <h1>Comments</h1>
+        <div id="comment_info">
+        <p id="user_info">{% comment.user.name %} (@{% comment.user.username %})</p>
+        <p id="time_info">{% comment.date_posted %} {% comment.time_posted %}</p>
+        </div>
+        <div id="comment_text">
+        <p>{% comment.text %}</p>
+        </div>
+        <div id = "like_comment">
+            {% if user.logged_in %}
+                <button onclick="likeComment">Like</button>
+            {% endif %}
+            <p>{% comment.likes %} Likes<p>
+        </div>
+    </div>
+
+{% endblock %}
