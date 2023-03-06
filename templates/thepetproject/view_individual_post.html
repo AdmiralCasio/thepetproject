@@ -18,11 +18,17 @@ View Post
             border-right-style:none;
             border-top-style: solid;
             border-bottom-style: none;}
-        .like_and_comment_buttons{
-                                margin-right: 10px;
-                                margin-left: 20px;
-                                margin-top: 20px;
-                                margin-bottom: 20px;}
+        #like_post{
+                    margin-right: 10px;
+                    margin-left: 20px;           
+                    margin-top: 20px;
+                    margin-bottom: 20px;}
+        #comment_post{
+                    margin-right: 10px;
+                    margin-left: 20px;           
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+        }
         #like_and_comment_info{
             float: right;
             margin-right: 10px;}
@@ -54,6 +60,25 @@ View Post
         #comment_text{clear: both;
                     border-top-style: solid;}
     </style>
+    <script src="jquery.js"></script>
+    <script type="text/javascript">
+        function likeFormatting(buttonToEdit){
+            $(buttonToEdit).css("background-color", "#236807");
+            $(buttonToEdit).css("color", "white");
+            $(buttonToEdit).css("border-color", "white");
+        }
+        function likePost(post){
+            var buttonToEdit = "#like_post"
+            likeFormatting(buttonToEdit);
+        }
+        function likeComment(){
+            var buttonToEdit = "#like_comment_button"
+            likeFormatting(buttonToEdit);
+        }
+        function commentPost(){
+            alert("You commented on this post! (CHANGE THIS)")
+        }
+    </script>
 </head>
 {% block main_content %}
 
@@ -67,8 +92,8 @@ View Post
     </div>
     <div id="like_and_comment">
             {% if user.is_authenticated %}
-            <button class="like_and_comment_buttons" onclick="likePost">Like</button>
-            <button class="like_and_comment_buttons" onClick="commentPost">Comment</button>
+            <button id="like_post" onclick="likePost(post)">Like</button>
+            <button id="comment_post" onClick="commentPost()">Comment</button>
             {% endif %}
         <p id="like_and_comment_info">{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>
     </div>
@@ -84,7 +109,7 @@ View Post
         </div>
         <div id = "like_comment">
             {% if user.is_authenticated %}
-                <button onclick="likeComment">Like</button>
+                <button id="like_comment_button" onclick="likeComment()">Like</button>
             {% endif %}
             <p>{{ comment.likes }} Likes<p>
         </div>
