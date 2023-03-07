@@ -59,6 +59,7 @@ View Post
                     margin-right: 10px;}
         #comment_text{clear: both;
                     border-top-style: solid;}
+        #comment_form{display: none;}
     </style>
     <script src="jquery.js"></script>
     <script type="text/javascript">
@@ -76,7 +77,20 @@ View Post
             likeFormatting(buttonToEdit);
         }
         function commentPost(){
-            alert("You commented on this post! (CHANGE THIS)")
+            var formToShow="#comment_form"
+            $(formToShow).show()
+        }
+        function new_comment(){
+            var toShow="#comment_text"
+            var defaultText = "Your comment goes here..."
+            var output = document.getElementById(toShow).value
+            if (output == defaultText){
+                alert("Please enter your comment.")
+            }
+            else{
+                alert(document.getElementById(toShow).value);
+            }
+            
         }
     </script>
 </head>
@@ -92,8 +106,15 @@ View Post
     </div>
     <div id="like_and_comment">
             {% if user.is_authenticated %}
-            <button id="like_post" onclick="likePost(post)">Like</button>
+                <button id="like_post" onclick="likePost(post)">Like</button>
+                {% if user_has_liked_post %}
+                    likeFormatting("#like_post")
+                {% endif %}
             <button id="comment_post" onClick="commentPost()">Comment</button>
+            <form id="comment_form" onsubmit="new_comment()">
+                <textarea id="#comment_text" name="comment_text">Your comment goes here...</textarea><br><br>
+                <input type="submit" value="submit">
+            </form>
             {% endif %}
         <p id="like_and_comment_info">{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>
     </div>
@@ -101,8 +122,8 @@ View Post
     <div id="comments_section">
         <h1>Comments</h1>
         <div id="comment_info">
-        <p id="user_info">{{ comment.user.name }} (@{{ comment.user.username }})</p>
-        <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
+         <p id="user_info">{{ comment.user.name }} (@{{ comment.user.username }})</p>
+            <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
         </div>
         <div id="comment_text">
         <p>{{ comment.text }}</p>
@@ -110,6 +131,9 @@ View Post
         <div id = "like_comment">
             {% if user.is_authenticated %}
                 <button id="like_comment_button" onclick="likeComment()">Like</button>
+                {% if user_has_liked_comment %}
+                    likeFormatting("#like_comment_button")
+                {% endif %}
             {% endif %}
             <p>{{ comment.likes }} Likes<p>
         </div>
