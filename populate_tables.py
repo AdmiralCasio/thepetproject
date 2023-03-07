@@ -15,19 +15,23 @@ def populate():
         {'username': 'jeremyjohn145',
         'password': 'password123',
         'name': 'Jeremy John',
-        'date_joined': '2022-01-02'},
+        'date_joined': '2022-01-02',
+        'picture': 'cat.jpg'},
         {'username': 'johnboy69',
         'password': 'password123',
         'name': 'John Billingsley',
-        'date_joined': '2022-03-04'},
+        'date_joined': '2022-03-04',
+        'picture':''},
         {'username': 'jesus',
         'password': 'password123',
         'name': 'Jesus, Son of Christ',
-        'date_joined': '2022-03-02'},
+        'date_joined': '2022-03-02',
+        'picture':'jesus.jpg'},
         {'username': 'yecats',
         'password': 'password123', 
         'name': 'Stacey McLain',
-        'date_joined': '2022-09-09'}
+        'date_joined': '2022-09-09',
+        'picture':'cat.jpg'}
         
         # {
         #     'username': ,
@@ -75,7 +79,7 @@ def populate():
     post_list = []
     
     for user in users:
-        user_list.append(add_user(user['username'], user['password'], user['name'], date_joined=user['date_joined']))
+        user_list.append(add_user(user['username'], user['password'], user['name'], date_joined=user['date_joined'], image_path=user['picture']))
         
     for post in posts:
         post_list.append(add_post(post['caption'], post['date_posted'], post['time_posted'], post['posted_by'], post['likes'], post['number_of_comments'], post['liked_by']))
@@ -90,9 +94,11 @@ def populate():
             for c in Comment.objects.filter(post=p):
                print(f"- {c}: {c.text} by {c.user}")
 
-def add_user(username, password, name, date_joined):
+def add_user(username, password, name, date_joined, image_path):
     user = User.objects.get_or_create(username=username, password=password)[0]
     user_profile = UserProfile.objects.get_or_create(user=user, name=name, date_joined=date_joined)[0]
+    user_profile.picture = os.path.join(username, image_path)
+    print(user_profile.picture)
     user.save()
     user_profile.save()
     return user_profile

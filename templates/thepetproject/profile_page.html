@@ -1,0 +1,42 @@
+{% extends 'thepetproject/base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+    <head>
+        <style>
+            
+        </style>
+    </head>
+
+    {% block title_append %} {{ userprofile.user }} {% endblock %}
+    {% block main_content %}
+        <div id = "profile-head">
+            <img src="{{ MEDIA_URL }}{{ userprofile.picture }}" alt={{userprofile.picture}}></img>
+            <span id = "profile-info">
+                {{ userprofile.name }}
+                @{{ userprofile.user }}
+                Joined: {{ user.date_joined }}
+            </span>
+            {% if user.is_authenticated %}
+                {% if user.username == userprofile.user %}
+                    <a href="{% url 'thepetproject:my_account' %}">My Account</a>
+                    {% endif %}
+            {% endif %}
+        </div>
+        <div id = "profile-recent-posts">
+            <h2>Recent Posts</h2>
+            {% for post in recent_posts %}
+                <img src = "{{ MEDIA_URL }}{{ post.image }}" alt={{post.image}}></img>
+                <span class = "recent-posts-caption">{{ post.caption }}</span>
+                <span class = "recent-posts-date">{{ post.date_posted }}</span>
+            {% endfor %}
+        </div>
+        <div id = "profile-top-comments">
+            <h2>Top Comments</h2>
+            {% for comment in top_comments %}
+                <span class = "comment">
+                    <a href = ""></a>
+                </span>
+                
+            {% endfor %}
+        </div>
+    {% endblock %}
