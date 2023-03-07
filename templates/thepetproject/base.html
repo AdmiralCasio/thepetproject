@@ -4,6 +4,7 @@
     <head>
         <title>The Pet Project - {% block title_append %} Page name goes here {% endblock %}</title>
         <link rel="stylesheet" href="{% static 'thepetproject/css/base.css' %}" type="text/css">
+        {% block css_link %} {% endblock %}
     </head>
     <body>
         <header>
