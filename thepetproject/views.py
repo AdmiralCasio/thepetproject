@@ -4,6 +4,25 @@ from thepetproject.models import UserProfile, Post, Comment, UserHasLikedPost, U
 def index(request):
     return render(request, 'thepetproject/index.html')
 
+def like(request):
+    comment_or_post_id = request.GET['comment_or_post_id']
+    isPost = request.get['isPost']
+    if isPost:
+        post = Post.get(comment_or_post_id)
+        post.likes += 1
+        post.save()
+        user_likes_post_instance = UserHasLikedPost.get_or_create(comment_or_post_id)
+        user_likes_post_instance.save()
+        new_likes = Post.get(comment_or_post_id).likes
+    else:
+        comment = Comment.get(comment_or_post_id)
+        comment.likes += 1
+        comment.save()
+        user_likes_comment_instance = UserHasLikedComment.get_or_create(comment_or_post_id)
+        user_likes_comment_instance.save()
+        new_likes = Comment.get(comment_or_post_id).likes
+
+    return HttpResponse(new_likes)
 def view_individual_post(request, post_id):
 
     post = Post.objects.get(post_id)
