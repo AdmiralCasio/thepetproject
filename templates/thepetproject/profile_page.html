@@ -38,9 +38,13 @@
             {% for comment in top_comments %}
                 <span class = "comment">
                     <a href = "">
-                        <span id="top-section"><p id=''>{{ comment.text }}</p><p>{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</p></span>
-                        <span id = "bottom-section"></span>
+                        <span id="top-section">
+                            <span id="comment-text">{{ comment.text }}</span>      
+                            <span id="comment-datetime">{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</span>
+                        </span>
                     </a>
+                        <span id = "bottom-section"><button id="like-button">Like</button> {{ comment.likes }} likes</span>
+                    
                 </span>
                 
             {% endfor %}

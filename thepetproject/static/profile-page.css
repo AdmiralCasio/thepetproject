@@ -39,3 +39,11 @@
 .comment{
     text-decoration: none;
 }
+
+.comment #top-section{
+    display:inline;
+}
+
+.comment #comment-datetime{
+    padding-left: 200px;
+}
