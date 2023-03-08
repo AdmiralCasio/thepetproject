@@ -23,9 +23,10 @@ def like(request):
         new_likes = Comment.get(comment_or_post_id).likes
 
     return HttpResponse(new_likes)
-def view_individual_post(request, post_id):
 
-    post = Post.objects.get(post_id)
+def get_view_post_context_dict(request):
+    post_id = request.GET("post_id")
+    post = Post.objects.get(post_id=post_id)
     comment = Comment.objects.order_by('-date').order_by('-time')[0]
     current_user = request.user
     try:
@@ -44,5 +45,31 @@ def view_individual_post(request, post_id):
                     'has_user_liked_post': has_user_liked_post,
                     'has_user_liked_comment': has_user_liked_comment}
 
-    return render(request, 'thepetproject/view_individual_post.html', context_dict)
+    return context_dict
+def view_individual_post(request):
 
+    context_dict = get_view_post_context_dict(request)
+
+    url = 'thepetproject/posts/'
+    return render(request, url , context = context_dict)
+
+def create_comment(request):
+    post_id = request.GET("post_id")
+    post = Post.objects.get(post_id=post_id)
+    comment_text = request.POST("comment_text")
+    current_user = request.user
+    context_dict = get_view_post_context_dict(request)
+
+    url = 'thepetproject/posts/'+ post_id + 'create-comment'
+    return render(request, url, context=context_dict)
+
+def add_comment(request):
+    post_id = request.GET("post_id")
+    post = Post.objects.get(post_id=post_id)
+    comment_text = request.POST("comment_text")
+    current_user = request.user
+    new_comment = Comment.get_or_create(user_id =current_user.user_id, post_id = post_id, text = comment_text)
+    new_comment.save()
+    url = 'thepetproject/posts/' + post_id
+    context_dict = get_view_post_context_dict(request)
+    return render(request, url, context=context_dict)

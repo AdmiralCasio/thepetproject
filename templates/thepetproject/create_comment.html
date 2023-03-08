@@ -1,0 +1,28 @@
+{% extends base.html %}
+
+{% block title_append %}
+Create Comment
+{% endblock %}
+<head>
+    <script src="jquery.js"></script>
+    <script>
+        function new_comment(){
+            var toSend="#comment_text"
+            var defaultText = "Your comment goes here..."
+            var output = document.getElementById(toSend).value
+            if (output == defaultText) {
+                alert("Please enter your comment.")
+                return false;
+            }
+            else{
+                return true;
+            }
+
+        }
+    </script>
+</head>
+{% block main_content %}
+<form action="thepetproject/posts/{{ post.post_id }}/add-comment" onsubmit="new_comment()" method="post">
+    <textarea id="#comment_text" name="comment_text">Your comment goes here...</textarea><br><br>
+    <input type="submit" value="submit">
+</form>
