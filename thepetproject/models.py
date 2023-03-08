@@ -23,7 +23,7 @@ class Post(models.Model):
     def get_correct_directory(self, filename):
         return os.path.join(self.user.user.username, 'posts', filename)
     
-    image = models.ImageField(blank=False, upload_to=get_correct_directory)
+    image = models.ImageField(blank=False, upload_to=get_correct_directory, default='default-profile.jpg')
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date_posted = models.DateField()
     time_posted = models.TimeField()
