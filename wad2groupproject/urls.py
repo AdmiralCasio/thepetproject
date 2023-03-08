@@ -24,4 +24,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('thepetproject/', include('thepetproject.urls')),
     path('', views.index, name="index"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
