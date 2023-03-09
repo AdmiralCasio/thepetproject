@@ -49,15 +49,15 @@ def populate():
          'number_of_comments': 1,
          'posted_by': 'jesus',
          'liked_by': ['yecats'],
-         'image':None},
+         'image': '09012022_112903.mov.00_00_28_21.Still001.jpg'},
         {'caption': "he's so small!",
          'date_posted': '2023-05-04',
-         'time_posted':'13:45:32',
+         'time_posted': '13:45:32',
          'likes': 1,
          'number_of_comments': 1,
          'posted_by': 'yecats',
          'liked_by': ['jesus'],
-         'image':'IMG-20230308-WA0013.jpg'}
+         'image': 'IMG-20230308-WA0013.jpg'}
     ]
     
     comments = [
