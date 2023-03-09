@@ -1,5 +1,5 @@
 {% extends 'thepetproject/base.html' %}
-{% load static %}
+{% load staticfiles %}
     {% block embedded-css %}
         <link rel="stylesheet" href="{% static 'profile-page.css' %}" type="text/css">
     {% endblock %}
@@ -26,26 +26,34 @@
         <section id="profile-posts-comments-container">
             <div id="profile-recent-posts">
                 <h2>Recent Posts</h2>
-                {% for post in recent_posts %}
-                    <span class="post">
-                        <img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/>
-                        <span class="recent-posts-caption">{{ post.caption }}</span><br/>
-                        <span class="recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
-                    </span>
-                {% endfor %}
+                {% if recent_posts %}
+                    {% for post in recent_posts %}
+                        <span class="post">
+                            <img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/>
+                            <span class="recent-posts-caption">{{ post.caption }}</span><br/>
+                            <span class="recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
+                        </span>
+                    {% endfor %}
+                {% else %}
+                    <strong>This user has no posts.</strong>
+                {% endif %}
             </div>
 
             <div id="profile-top-comments">
                 <h2>Top Comments</h2>
-                {% for comment in top_comments %}
-                    <span class="comment">
-                        <a href="">
-                            <span id="top-section"><p id=''>{{ comment.text }}</p><p>{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</p></span>
-                            <span id = "bottom-section"></span>
-                        </a>
-                    </span>
+                {% if top_comments %}
+                    {% for comment in top_comments %}
+                        <span class="comment">
+                            <a href="">
+                                <span id="top-section"><p id=''>{{ comment.text }}</p><p>{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</p></span>
+                                <span id = "bottom-section"></span>
+                            </a>
+                        </span>
 
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <strong>This user hasn't made any comments.</strong>
+                {% endif %}
             </div>
         </section>
     {% endblock %}

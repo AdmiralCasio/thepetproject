@@ -25,7 +25,7 @@
         <section id="sidebar-main-content">
             <div id="sidebar">
                 <ul>
-                    <li><button>Homepage</button></li>
+                    <li><a href="{% url 'thepetproject:index' %}"><button type="button">Homepage</button></a></li>
                     <li><button>View Posts</button></li>
                     {% if user.logged_in %}
                     <li><button>Upload Post</button></li>

@@ -5,8 +5,8 @@
 Homepage
 {% endblock %}
 
-{% block css_link %}
-<link rel="stylesheet" href="{% static 'thepetproject/css/index.css' %}" type="text/css">
+{% block embedded-css %}
+<link rel="stylesheet" href="{% static 'index.css' %}" type="text/css">
 {% endblock %}
 </head>
 
@@ -22,9 +22,9 @@ Homepage
 {% for post in posts %}
     <div class="post">
     {% if post.image.url is not None %}
-        <img src="/media/{{ post.image }}" alt="An image of someones pet" class ="pic">
+        <img src="{{ MEDIA_URL }}{{ post.image }}" alt="An image of someones pet" class ="pic">
     {% else %}
-        <img src="/media/MissingImage.png" alt="An image of someones pet" class ="pic">
+        <img src="{{ MEDIA_URL }}MissingImage.png" alt="An image of someones pet" class ="pic">
     {% endif %}
         <div class = "grid">
             <p class="name"><b>Username:</b> {{ post.user.name }}</p>
