@@ -1,0 +1,144 @@
+{% extends 'thepetproject/base.html' %}
+{% load staticfiles %}
+{% block title_append %}
+View Post
+{% endblock %}
+<head>
+    <style>
+        #post{border-color: black;
+            border-style: solid;
+            }
+        #title_and_image{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: none;
+            border-bottom-style: solid;}
+        #like_and_comment{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: solid;
+            border-bottom-style: none;}
+        #like_post{
+                    margin-right: 10px;
+                    margin-left: 20px;           
+                    margin-top: 20px;
+                    margin-bottom: 20px;}
+        #comment_post{
+                    margin-right: 10px;
+                    margin-left: 20px;           
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+        }
+        #like_and_comment_info{
+            float: right;
+            margin-right: 10px;}
+        #comments_section{
+            clear: both;
+            border-color: black;
+            border-style: solid;
+            margin-top: 20px;
+            margin-bottom: 20px;}
+        #comment_info{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: none;
+            border-bottom-style: solid;}
+        #like_comment{
+            border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: solid;
+            border-bottom-style: none;}
+        #like_comment button{margin-left: 20px;
+                            margin-top: 20px;
+                            margin-bottom: 20px;}
+        #like_comment p{float: right;
+                        margin-right: 10px;}
+        #user_info{float:left;}
+        #time_info{float:right;
+                    margin-right: 10px;}
+        #comment_text{clear: both;
+                    border-top-style: solid;}
+        #comment_form{display: none;}
+    </style>
+    <script src="jquery.js"></script>
+
+    <script type="text/javascript">
+
+        function likeButtonFormatting(buttonToEdit){
+            $(buttonToEdit).css("background-color", "#236807");
+            $(buttonToEdit).css("color", "white");
+            $(buttonToEdit).css("border-color", "white");
+        }
+
+        function update_likes_on_page(xhttp){
+                var textToEdit = "#like_and_comment_info";
+                var newText = "{{ post.number_of_comments }} comments     " + xhttp.responseText + " Likes"
+                $(textToEdit).$("p").text = newText;
+            }
+
+        function like(postOrCommentID, isPost){
+            if (isPost){
+                var buttonToEdit = "#like_post"
+                var like_url = "templates/thepetproject/like&comment_or_post_id=" + postOrCommentID + "&isPost=True"
+            }
+            else{
+                var buttonToEdit = "#like_comment_button"
+                var like_url = "templates/thepetproject/like.html?&comment_or_post_id=" + postOrCommentID + "&isPost=True"
+            }
+            var xhttp = new XMLHttpRequest()
+            xhttp.open(GET, like_url, true)
+            xhttp.send()
+            alert("Liked on DB") // Remove
+            xhttp.onreadystatechange = update_likes_on_page(xhttp);
+            likeButtonFormatting(buttonToEdit);
+        }
+        function commentPost(){
+            var formToShow="#comment_form"
+            $(formToShow).show()
+        }
+    </script>
+</head>
+{% block main_content %}
+
+<div id = "post">
+    <div id="title_and_image">
+    <h1>{{ post.title }}</h1>
+    <img src="{{ post.image }}" alt="Post Picture">
+    </div>
+    <div>
+        <p>{{ post.caption }}</p>
+    </div>
+    <div id="like_and_comment">
+            {% if user.is_authenticated %}
+                <button id="like_post" onclick="like('{{ post.post_id }}', true)">Like</button>
+                {% if user_has_liked_post %}
+                    likeFormatting("#like_post")
+                {% endif %}
+            <button id="comment_post" onClick="commentPost()">Comment</button>
+            {% endif %}
+        <div id="like_and_comment_info">
+            <p>{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>
+    </div>
+</div>
+    <div id="comments_section">
+        <h1>Comments</h1>
+        <div id="comment_info">
+         <p id="user_info">{{ comment.user.name }} (@{{ comment.user.username }})</p>
+            <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
+        </div>
+        <div id="comment_text">
+        <p>{{ comment.text }}</p>
+        </div>
+        <div id = "like_comment">
+            {% if user.is_authenticated %}
+                <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
+                {% if user_has_liked_comment %}
+                    likeFormatting("#like_comment_button")
+                {% endif %}
+            {% endif %}
+            <p>{{ comment.likes }} Likes<p>
+        </div>
+    </div>
+
+{% endblock %}

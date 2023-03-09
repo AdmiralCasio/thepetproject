@@ -1,16 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-<<<<<<< HEAD
 from thepetproject.models import UserProfile, Post, Comment, UserHasLikedPost, UserHasLikedComment
-=======
+
 from thepetproject.models import UserProfile, Post, Comment
 from django.contrib.auth.models import User
 from django.urls import reverse
 
->>>>>>> e39006df7bea7b484a3db3d790740764dfdd56cc
-def index(request):
 
-<<<<<<< HEAD
+def index(request):
+    return render(request, 'thepetproject/index.html')
+
 def like(request):
     comment_or_post_id = request.GET['comment_or_post_id']
     isPost = request.get['isPost']
@@ -31,19 +30,19 @@ def like(request):
 
     return HttpResponse(new_likes)
 
-def get_view_post_context_dict(request):
-    post_id = request.GET("post_id")
+def get_view_post_context_dict(request, post_id):
+
     post = Post.objects.get(post_id=post_id)
-    comment = Comment.objects.order_by('-date').order_by('-time')[0]
+    comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
     current_user = request.user
     try:
-        has_user_liked_post = UserHasLikedPost.get(current_user.username)
+        has_user_liked_post = UserHasLikedPost.get(user_id = current_user.user_id, post_id = post_id)
     except:
         has_user_liked_post = False
     else:
         has_user_liked_post = True
     try:
-        has_user_liked_comment = UserHasLikedComment.get(current_user.username)
+        has_user_liked_comment = UserHasLikedComment.get(user_id = current_user.user_id, post_id = post_id)
     except:
         has_user_liked_comment = False
     else:
@@ -53,11 +52,11 @@ def get_view_post_context_dict(request):
                     'has_user_liked_comment': has_user_liked_comment}
 
     return context_dict
-def view_individual_post(request):
+def view_individual_post(request, post_id):
 
-    context_dict = get_view_post_context_dict(request)
+    context_dict = get_view_post_context_dict(request, post_id)
 
-    url = 'thepetproject/posts/'
+    url = 'thepetproject/view_individual_post.html'
     return render(request, url , context = context_dict)
 
 def create_comment(request):
@@ -80,7 +79,7 @@ def add_comment(request):
     url = 'thepetproject/posts/' + post_id
     context_dict = get_view_post_context_dict(request)
     return render(request, url, context=context_dict)
-=======
+
     post_list = Post.objects.order_by('-likes')[:3]
     context_dict = {}
     context_dict['posts'] = post_list
@@ -105,5 +104,4 @@ def profile_page(request, username):
         pass
     
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
-        
->>>>>>> e39006df7bea7b484a3db3d790740764dfdd56cc
+
