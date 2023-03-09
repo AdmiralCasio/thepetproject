@@ -1,0 +1,76 @@
+@import "vars.css";
+
+header{
+    background-color: var(--background_green);
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#login {
+    margin: 20px;
+}
+
+#login img {
+    float: left;
+}
+
+header #heading{
+    height: 22%;
+    width: 22%;
+    float:left;
+    border-color: white;
+    border-style: solid;}
+
+#heading h1 {text-align: center}
+
+/* Start of layout of sidebar and main content base */
+
+#container { /* This lets us put the sidebar and main content side by side easily */
+    display: flex;
+    height: 100vh;
+}
+
+#sidebar {
+    background-color: var(--background_green);
+    margin-right: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: fit-content;
+}
+
+#sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: auto;
+    width: fit-content;
+}
+
+#sidebar ul li {
+    padding: 0;
+    margin: 0;
+}
+
+#main {
+    background-color: var(--background_green);
+    width: 100%;
+    padding: 20px;
+    color: white;
+}
+
+/* End of layout of sidebar and main content base */
+
+button {
+    margin: 10px;
+    background-color: #236807;
+    border-color: white;
+    color: white;
+}
+
+#login {
+    float: right
+}
+
