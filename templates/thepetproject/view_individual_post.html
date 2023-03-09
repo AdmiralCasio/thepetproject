@@ -3,7 +3,7 @@
 {% block title_append %}
 View Post
 {% endblock %}
-<head>
+    {% block embedded-css %}
     <style>
         #post{border-color: black;
             border-style: solid;
@@ -22,13 +22,19 @@ View Post
                     margin-right: 10px;
                     margin-left: 20px;           
                     margin-top: 20px;
-                    margin-bottom: 20px;}
+                    margin-bottom: 20px;
+                    border-style: none;
+                    color: black;
+                    background-color: gray;}
         #comment_post{
                     margin-right: 10px;
                     margin-left: 20px;           
                     margin-top: 20px;
                     margin-bottom: 20px;
-        }
+                    border-style: none;
+                    color: black;
+                    background-color: gray;}
+        
         #like_and_comment_info{
             float: right;
             margin-right: 10px;}
@@ -51,7 +57,10 @@ View Post
             border-bottom-style: none;}
         #like_comment button{margin-left: 20px;
                             margin-top: 20px;
-                            margin-bottom: 20px;}
+                            margin-bottom: 20px;
+                            background-color: gray;
+                            border-style: none;
+                            color: black}
         #like_comment p{float: right;
                         margin-right: 10px;}
         #user_info{float:left;}
@@ -60,8 +69,9 @@ View Post
         #comment_text{clear: both;
                     border-top-style: solid;}
         #comment_form{display: none;}
-    </style>
-    <script src="jquery.js"></script>
+        </style>
+    {% endblock %}
+    <!-- <script src="jquery.js"></script>
 
     <script type="text/javascript">
 
@@ -97,14 +107,13 @@ View Post
             var formToShow="#comment_form"
             $(formToShow).show()
         }
-    </script>
-</head>
+    </script> -->
 {% block main_content %}
 
 <div id = "post">
     <div id="title_and_image">
-    <h1>{{ post.title }}</h1>
-    <img src="{{ post.image }}" alt="Post Picture">
+        <h1>{{ post.image }}</h1>
+    <img src="{{ MEDIA_URL }}{{ post_user.user }}/posts/IMG-20230308-WA0013.jpg" alt="Post Picture">
     </div>
     <div>
         <p>{{ post.caption }}</p>
@@ -124,7 +133,7 @@ View Post
     <div id="comments_section">
         <h1>Comments</h1>
         <div id="comment_info">
-         <p id="user_info">{{ comment.user.name }} (@{{ comment.user.username }})</p>
+         <p id="user_info">{{ comment.user.name }} (@ {{ comment.user }})</p>
             <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
         </div>
         <div id="comment_text">
