@@ -1,0 +1,49 @@
+#profile-head img{
+    height:100px;
+    width:100px;
+    text-align: left;
+    display: inline-block;
+}
+
+#profile-info{
+    display:inline-block;
+    
+}
+
+.post img{
+    display:inline;
+    max-height:200px;
+    max-width:35%;
+    width:auto;
+    height:auto;
+    margin-left:auto;
+    margin-right: auto;
+    
+}
+
+.post span{
+    
+}
+
+.recent-posts-caption{
+    text-align:left;
+}
+
+.recent-posts-date{
+    text-align:right;
+    float:right;
+    position:absolute;
+    padding-left:200px;
+}
+
+.comment{
+    text-decoration: none;
+}
+
+.comment #top-section{
+    display:inline;
+}
+
+.comment #comment-datetime{
+    padding-left: 200px;
+}
