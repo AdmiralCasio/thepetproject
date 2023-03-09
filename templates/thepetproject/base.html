@@ -22,17 +22,21 @@
             {% endif %}
             </div>
         </header>
-        <div class="sidebar">
-            <button>Homepage</button>
-            <button>View Posts</button>
-            {% if user.logged_in %}
-            <button>Upload Post</button>
-            {% endif %}
-        </div>
-        <div id = "main">
-        {% block main_content %}
-            Content of page goes here
-        {% endblock %}
-    </div>
+        <section id="sidebar-main-content">
+            <div id="sidebar">
+                <ul>
+                    <li><button>Homepage</button></li>
+                    <li><button>View Posts</button></li>
+                    {% if user.logged_in %}
+                    <li><button>Upload Post</button></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div id="main">
+            {% block main_content %}
+                Content of page goes here
+            {% endblock %}
+            </div>
+        </section>
     </body>
 </html>

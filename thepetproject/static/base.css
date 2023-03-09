@@ -29,7 +29,7 @@ header #heading{
 
 /* Start of layout of sidebar and main content base */
 
-#container { /* This lets us put the sidebar and main content side by side easily */
+#sidebar-main-content { /* This lets us put the sidebar and main content side by side easily */
     display: flex;
     height: 100vh;
 }
@@ -55,10 +55,10 @@ header #heading{
 }
 
 #main {
-    background-color: var(--background_green);
+    background-color: white;
     width: 100%;
     padding: 20px;
-    color: white;
+    color: black;
 }
 
 /* End of layout of sidebar and main content base */
