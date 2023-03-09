@@ -11,14 +11,19 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
-    def get_correct_directory(self):
-        return self.user.username
+    def get_correct_directory(self, filename):
+        return os.path.join(self.user.username, filename)
     
     picture = models.ImageField(blank = True, upload_to=get_correct_directory)
         
 class Post(models.Model):
     post_id = models.AutoField(primary_key=True)
     caption = models.CharField(max_length=500)
+    
+    def get_correct_directory(self, filename):
+        return os.path.join(self.user.user.username, 'posts', filename)
+    
+    image = models.ImageField(blank=False, upload_to=get_correct_directory, default='default-profile.jpg')
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date_posted = models.DateField()
     time_posted = models.TimeField()
@@ -29,10 +34,8 @@ class Post(models.Model):
     def __str__(self):
         return str(self.post_id)
     
-    def get_correct_directory(self):
-        return os.path.join(self.user.username, "/posts")
     
-    image = models.ImageField(blank=False, upload_to=get_correct_directory)
+    image = models.ImageField(blank=False, upload_to='media/')
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

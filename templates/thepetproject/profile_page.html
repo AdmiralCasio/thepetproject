@@ -1,0 +1,52 @@
+{% extends 'thepetproject/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+    {% block embedded-css %}
+        <link rel="stylesheet" href="{% static 'profile-page.css' %}" type="text/css">
+    {% endblock %}
+    {% block title_append %} {{ userprofile.user }} {% endblock %}
+    {% block main_content %}
+        <div id = "profile-head">
+            {% if userprofile.picture %}
+                <img src="{{ MEDIA_URL }}{{ userprofile.picture }}" alt={{userprofile.picture}}></img>
+            {% else %}
+                <img src="{{ MEDIA_URL }}default-profile.jpg"></img>
+            {% endif %}
+                <span id = "profile-info">
+                {{ userprofile.name }}<br/>
+                @{{ userprofile.user }}<br/>
+                Joined: {{ userprofile.date_joined|date:"d/m/Y" }}<br/>
+            </span>
+            {% if user.is_authenticated %}
+                {% if user.username == userprofile.user %}
+                    <a href="{% url 'thepetproject:my_account' %}">My Account</a>
+                    {% endif %}
+            {% endif %}
+        </div>
+        <div id = "profile-recent-posts">
+            <h2>Recent Posts</h2>
+            {% for post in recent_posts %}
+                <span class="post">
+                    <img src = "{{ MEDIA_URL }}{{ post.image }}" alt={{post.image}}></img><br/>
+                    <span class = "recent-posts-caption">{{ post.caption }}</span>
+                    <span class = "recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
+                </span>
+            {% endfor %}
+        </div>
+        <div id = "profile-top-comments">
+            <h2>Top Comments</h2>
+            {% for comment in top_comments %}
+                <span class = "comment">
+                    <a href = "">
+                        <span id="top-section">
+                            <span id="comment-text">{{ comment.text }}</span>      
+                            <span id="comment-datetime">{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</span>
+                        </span>
+                    </a>
+                        <span id = "bottom-section"><button id="like-button">Like</button> {{ comment.likes }} likes</span>
+                    
+                </span>
+                
+            {% endfor %}
+        </div>
+    {% endblock %}

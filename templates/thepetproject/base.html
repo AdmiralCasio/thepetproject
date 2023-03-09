@@ -1,8 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
     <head>
         <title>The Pet Project - {% block title_append %} Page name goes here {% endblock %}</title>
-        <link rel="stylesheet" href="base.css" type="text/css">
+        <link rel="stylesheet" href="{% static 'base.css' %}" type="text/css">
+        {% block embedded-css %}
+        {% endblock %}
     </head>
     <body>
         <header>
@@ -21,7 +25,11 @@
         <div class="sidebar">
             <button>Homepage</button>
             <button>View Posts</button>
+<<<<<<< HEAD
             {% if user.is_authenticated %}
+=======
+            {% if user.logged_in %}
+>>>>>>> e39006df7bea7b484a3db3d790740764dfdd56cc
             <button>Upload Post</button>
             {% endif %}
         </div>

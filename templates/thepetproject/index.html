@@ -1,5 +1,52 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
     <h1>The Pet Project</h1>
     <a href="thepetproject/posts/">view_individual_post</a>
 </html>
+=======
+{% extends "thepetproject/base.html" %}
+{% load staticfiles %}
+<head>
+{% block title_append %}
+Homepage
+{% endblock %}
+
+{% block css_link %}
+<link rel="stylesheet" href="{% static 'thepetproject/css/index.css' %}" type="text/css">
+{% endblock %}
+</head>
+
+<body>
+{% block main_content %}
+
+<div id="welcometext">
+<p>Welcome to The Pet Project, the perfect place to upload and share pictures of your animal friends.</p>
+</div>
+
+<div id="posts">
+
+{% for post in posts %}
+    <div class="post">
+    {% if post.image.url is not None %}
+        <img src="/media/{{ post.image }}" alt="An image of someones pet" class ="pic">
+    {% else %}
+        <img src="/media/MissingImage.png" alt="An image of someones pet" class ="pic">
+    {% endif %}
+        <div class = "grid">
+            <p class="name"><b>Username:</b> {{ post.user.name }}</p>
+            <p class="date"><b>Date Posted:</b> {{ post.date_posted }}</p>
+            <p class="caption"><b>Caption:</b> {{ post.caption }}</p>
+            <p class="likes"><b>Likes:</b> {{ post.likes }}</p>
+            <p class="comments"><b>Comments:</b> {{ post.number_of_comments }}</p>
+        </div>
+    </div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
+
+</body>
+>>>>>>> e39006df7bea7b484a3db3d790740764dfdd56cc
