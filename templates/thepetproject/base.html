@@ -14,11 +14,11 @@
             <h1>The Pet Project</h1>
             </div>
             <div id="login">
-            {% if user.logged_in %}
-            <button>Logout</button>
-            <img src="img_link" alt="Profile picture">
+            {% if user.is_authenticated %}
+                <a href="{% url 'thepetproject:logout' %}"><button>Logout</button></a>
+                <a href="{% url 'thepetproject:profile_page' %}"><img src="{{ MEDIA_URL }}{{ userprofile.picture }}" alt="Profile picture"></a>
             {% else %}
-            <button>Login/Sign Up</button>
+                <a href="{% url 'thepetproject:sign-up' %}"><button>Login/Sign Up</button></a>
             {% endif %}
             </div>
         </header>

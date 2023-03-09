@@ -99,7 +99,10 @@ def populate():
                print(f"- {c}: {c.text} by {c.user}")
 
 def add_user(username, password, name, date_joined, image_path=None):
-    user = User.objects.get_or_create(username=username, password=password)[0]
+    if not User.objects.filter(username=username).exists():
+        user = User.objects.create_user(username=username, password=password)
+    else:
+        user = User.objects.get(username=username)
     user_profile = UserProfile.objects.get_or_create(user=user, name=name, date_joined=date_joined)[0]
     if image_path:
         user_profile.picture = os.path.join(username, image_path)
