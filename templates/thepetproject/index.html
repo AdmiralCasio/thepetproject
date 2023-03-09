@@ -21,13 +21,17 @@ Homepage
 
 {% for post in posts %}
     <div class="post">
-    <img src="/media/{{ post.image }}" alt="An image of someones pet" class ="pic">
+    {% if post.image.url is not None %}
+        <img src="/media/{{ post.image }}" alt="An image of someones pet" class ="pic">
+    {% else %}
+        <img src="/media/MissingImage.png" alt="An image of someones pet" class ="pic">
+    {% endif %}
         <div class = "grid">
-    <h4 class="name">{{ post.user.name }}</h4>
-    <h4 class="date">{{ post.date_posted }}</h4>
-    <p class="caption"> {{ post.caption }}</p>
-    <h4 class="likes">Likes: {{ post.likes }}</h4>
-    <h4 class="comments">Comments: {{ post.number_of_comments }}</h4>
+            <p class="name"><b>Username:</b> {{ post.user.name }}</p>
+            <p class="date"><b>Date Posted:</b> {{ post.date_posted }}</p>
+            <p class="caption"><b>Caption:</b> {{ post.caption }}</p>
+            <p class="likes"><b>Likes:</b> {{ post.likes }}</p>
+            <p class="comments"><b>Comments:</b> {{ post.number_of_comments }}</p>
         </div>
     </div>
 

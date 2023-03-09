@@ -5,7 +5,7 @@
     margin-left: 200px;
     height: fit-content;
     padding: 5px;
-    width: 1250px ;
+    width: 1300px ;
 }
 
 .pic{
@@ -19,26 +19,29 @@
 .grid{
     display: grid;
     float: right;
-    margin-right: 450px;
+    margin-right: 400px;
 }
 .name{
     grid-row-start:1 ;
     grid-column-start: 1;
 }
+
 .date{
     grid-row-start: 1;
-    grid-column-start: 3;
+    grid-column-start: 6;
+    margin-right: 10px;
 }
 .caption{
     padding-top: 20px;
     grid-row-start: 4;
-    grid-column-start: 2;
+    grid-column-start: 1;
 }
 
 .likes{
     padding-top: 40px;
     grid-row-start: 6;
-    grid-column-start: 3;
+    grid-column-start: 5;
+
 }
 
 .comments{

@@ -32,7 +32,7 @@ class Post(models.Model):
     def get_correct_directory(self):
         return os.path.join(self.user.username, "/posts")
     
-    image = models.ImageField(blank=False, upload_to='static/')
+    image = models.ImageField(blank=False, upload_to='media/')
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
