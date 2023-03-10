@@ -35,7 +35,7 @@ class Post(models.Model):
         return str(self.post_id)
     
     
-    image = models.ImageField(blank=False, upload_to='media/')
+    #image = models.ImageField(blank=False, upload_to='media/')
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

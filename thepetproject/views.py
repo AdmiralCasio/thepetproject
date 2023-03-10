@@ -34,8 +34,12 @@ def get_view_post_context_dict(request, post_id):
 
     post = Post.objects.get(post_id=post_id)
     post_user = UserProfile.objects.get(user_id = post.user_id)
-    comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
+    try:
+        comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
+    except:
+        comment = "none"
     current_user = request.user
+    user_profile = UserProfile.objects.get(user = current_user)
     try:
         has_user_liked_post = UserHasLikedPost.get(user_id = current_user.user_id, post_id = post_id)
     except:
@@ -49,6 +53,7 @@ def get_view_post_context_dict(request, post_id):
     else:
         has_user_liked_comment = True
     context_dict = {'post': post, 'comment': comment, 'user': current_user, 'post_user': post_user,
+                    'user_profile': user_profile,
                     'has_user_liked_post': has_user_liked_post,
                     'has_user_liked_comment': has_user_liked_comment}
 

@@ -16,7 +16,7 @@
             <div id="login">
             {% if user.is_authenticated %}
             <button>Logout</button>
-            <img src="{{user.profile_picture}}" alt="Profile picture">
+            <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" alt="{{ user_profile.picture }}">
             {% else %}
             <button>Login/Sign Up</button>
             {% endif %}

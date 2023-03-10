@@ -112,8 +112,7 @@ View Post
 
 <div id = "post">
     <div id="title_and_image">
-        <h1>{{ post.image }}</h1>
-    <img src="{{ MEDIA_URL }}{{ post_user.user }}/posts/IMG-20230308-WA0013.jpg" alt="Post Picture">
+    <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
     </div>
     <div>
         <p>{{ post.caption }}</p>
@@ -132,6 +131,7 @@ View Post
 </div>
     <div id="comments_section">
         <h1>Comments</h1>
+        {% if comment != "none" %}
         <div id="comment_info">
          <p id="user_info">{{ comment.user.name }} (@ {{ comment.user }})</p>
             <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
@@ -148,6 +148,7 @@ View Post
             {% endif %}
             <p>{{ comment.likes }} Likes<p>
         </div>
+        {% endif %}
     </div>
 
 {% endblock %}
