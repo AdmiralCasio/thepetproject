@@ -14,3 +14,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('name', 'picture')
+        
+class ChangeProfilePictureForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('picture', )

@@ -1,0 +1,57 @@
+{% extends 'thepetproject/base.html' %}
+{% load staticfiles %}
+
+{% block title_append %}
+My Account
+{% endblock %}
+
+{% block embedded-css %}
+<style>
+    #profile-picture{
+        width:100px;
+        height:100px;
+    }
+</style>
+{% endblock %}
+
+{% block main_content %}
+<p><strong>Display Name:</strong> {{ userprofile.name }} <button type="button" id="changename">Change</button> <span id="nameentry" style="display:none"><input type="text" name="name"></input> <button type="button">Submit Change</button></span></p>
+<p><strong>Change Password:</strong> <button type="button" id="changepassword">Change</button> <span id="passwordentry" style="display:none"><input type="password" name="password"></input> <button type="submit">Submit Change</button></span></p>
+<p><strong>Profile Picture:</strong> <img id="profile-picture" src="{{ MEDIA_URL }}{{ userprofile.picture }}"></img> <span id="pictureentry"><form id="picture-form" method="post" action="{% url 'thepetproject:myaccount' %}" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+{{ profilepictureform.as_p }}
+
+<input type="submit" name="submit" value="Change Picture" /></span></p>
+
+<button id="delete-account">Delete Account</button>
+<script>
+    $(document).ready(function(){
+        $("#changename").click(function(){
+            $("#nameentry").css("display", "inline");
+        });
+        
+        $("#changepassword").click(function(){
+            $("#passwordentry").css("display", "inline");
+        });
+
+        $("#changepicture").click(function(){
+            $("#pictureentry").css("display", "inline");
+        });
+        $("#passwordentry button").click(function(){
+            alert("Test");
+            $.post('',{
+                'csrfmiddlewaretoken':'{{ csrf_token }}',
+                'type':'password',
+                'password':$('#passwordentry input').val()
+            }).done(function(){
+                alert("Password Updated");
+                $('#passwordentry input').val("");
+            })
+        });
+
+    });
+</script>
+
+{% endblock %}

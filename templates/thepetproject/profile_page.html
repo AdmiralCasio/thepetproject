@@ -17,9 +17,9 @@
                 Joined: {{ userprofile.date_joined|date:"d/m/Y" }}<br/>
             </span>
             {% if user.is_authenticated %}
-                {% if user.username == userprofile.user %}
-                    <a href="{% url 'thepetproject:my_account' %}">My Account</a>
-                    {% endif %}
+                {% if user.username == userprofile.user.username %}
+                    <a href="{% url 'thepetproject:myaccount' %}">My Account</a>
+                {% endif %}
             {% endif %}
         </div>
 

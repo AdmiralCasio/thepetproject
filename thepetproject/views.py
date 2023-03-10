@@ -3,15 +3,16 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from thepetproject.models import UserProfile, Post, Comment
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
-from thepetproject.forms import UserForm, UserProfileForm
+from thepetproject.forms import UserForm, UserProfileForm, ChangeProfilePictureForm
+import os
+from django.conf import settings
 
 
 def index(request):
-
     user_profile = None
     post_list = Post.objects.order_by('-likes')[:3]
     try:
@@ -39,15 +40,38 @@ def profile_page(request, username=None):
         context_dict['top_comments'] = comments
         
     except User.DoesNotExist:
-        raise Http404(f"The user {str(username)} does not exist")
+        redirect(reverse('thepetproject:index'))
     
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
  
 @login_required      
 def my_account(request):
-    user = User.objects.get(request.user)
-    print(user.username)
+    user = UserProfile.objects.get(user=request.user)
+    image_path_list = user.picture.path.split('\\')
+    context_dict = {'userprofile':user}
+    if request.method == "POST":
+        if request.POST.get('type') == None:
+            form = ChangeProfilePictureForm(request.POST, request.FILES, instance=user)
+            if form.is_valid():
+                image_path = os.path.join(settings.MEDIA_DIR, user.user.username, image_path_list[-1])
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+                form.save()
+            else:
+                print(form.errors)
+        elif request.POST.get('type') == 'password':
+            print("Changing password to " + request.POST.get('password'))
+            user.user.set_password(request.POST.get('password'))
+            user.user.save()
+            return HttpResponse({'status':1})
+    else:
+        form = ChangeProfilePictureForm()
+
+        context_dict['profilepictureform'] = form
+        
     
+    return render(request, 'thepetproject/my-account.html', context=context_dict)
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
