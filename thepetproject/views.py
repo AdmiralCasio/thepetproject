@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from thepetproject.models import UserProfile, Post, Comment
 from django.contrib.auth.models import User
 from django.urls import reverse
+from .forms import UploadPostForm
+from datetime import date,time
 
 def index(request):
 
@@ -29,4 +31,23 @@ def profile_page(request, username=None):
         raise Http404(f"The user {str(username)} does not exist")
     
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
+
+def upload_post_page(request):
+    sumbitted = False
+    
+    if request.method =="POST":
+        form = UploadPostForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            post.user = user
+            post.date_posted = date.today()
+            post.time_posted = time.localtime()
+            post.save()
+            return HttpResponseRedirect('thepetproject/upload_post_page')
+        else:
+            print(form.errors)
         
+    else:
+        form = UploadPostForm
+
+    return render(request, 'thepetproject/upload_post_page.html', {'form':form, 'submitted':submitted})
