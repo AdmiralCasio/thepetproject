@@ -26,21 +26,27 @@ def index(request):
     return render(request, 'thepetproject/index.html', context=context_dict)
 
 def profile_page(request, username=None):
-    context_dict = {}
+    context_dict = {'user_exists':True}
+    userprofile = None
+    if request.user.is_authenticated:
+            userprofile = UserProfile.objects.get(user=request.user)
+    context_dict['userprofile'] = userprofile
     try:
         if not username:
             if request.user.is_authenticated:
                 username = request.user.username
-                
-        userprofile = UserProfile.objects.get(user=User.objects.get(username=username))
+        
+        userprofile_page = UserProfile.objects.get(user=User.objects.get(username=username))
         posts = Post.objects.filter(user=userprofile).order_by('-date_posted').order_by('-time_posted')[:3]
         comments = Comment.objects.filter(user=userprofile).order_by('-likes')[:3]
-        context_dict['userprofile'] = userprofile
+        
+        context_dict['userprofile_page'] = userprofile_page
         context_dict['recent_posts'] = posts
         context_dict['top_comments'] = comments
         
     except User.DoesNotExist:
-        redirect(reverse('thepetproject:index'))
+        context_dict['user_exists'] = False
+        #return redirect(reverse('thepetproject:user-not-found'))
     
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
  
@@ -60,9 +66,12 @@ def my_account(request):
             else:
                 print(form.errors)
         elif request.POST.get('type') == 'password':
-            print("Changing password to " + request.POST.get('password'))
             user.user.set_password(request.POST.get('password'))
             user.user.save()
+            return HttpResponse({'status':1})
+        elif request.POST.get('type') == 'name':
+            user.name = request.POST.get('name')
+            user.save()
             return HttpResponse({'status':1})
     else:
         form = ChangeProfilePictureForm()

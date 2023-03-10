@@ -15,7 +15,7 @@ My Account
 {% endblock %}
 
 {% block main_content %}
-<p><strong>Display Name:</strong> {{ userprofile.name }} <button type="button" id="changename">Change</button> <span id="nameentry" style="display:none"><input type="text" name="name"></input> <button type="button">Submit Change</button></span></p>
+<p><strong>Display Name:</strong> <span id="name">{{ userprofile.name }}</span> <button type="button" id="changename">Change</button> <span id="nameentry" style="display:none"><input type="text" name="name"></input> <button type="submit">Submit Change</button></span></p>
 <p><strong>Change Password:</strong> <button type="button" id="changepassword">Change</button> <span id="passwordentry" style="display:none"><input type="password" name="password"></input> <button type="submit">Submit Change</button></span></p>
 <p><strong>Profile Picture:</strong> <img id="profile-picture" src="{{ MEDIA_URL }}{{ userprofile.picture }}"></img> <span id="pictureentry"><form id="picture-form" method="post" action="{% url 'thepetproject:myaccount' %}" enctype="multipart/form-data">
 
@@ -40,7 +40,6 @@ My Account
             $("#pictureentry").css("display", "inline");
         });
         $("#passwordentry button").click(function(){
-            alert("Test");
             $.post('',{
                 'csrfmiddlewaretoken':'{{ csrf_token }}',
                 'type':'password',
@@ -49,6 +48,18 @@ My Account
                 alert("Password Updated");
                 $('#passwordentry input').val("");
             })
+        });
+
+        $("#nameentry button").click(function(){
+            console.log("Button Pressed");
+            $.post('',{
+                'csrfmiddlewaretoken':'{{ csrf_token }}',
+                'type':'name',
+                'name':$('#nameentry input').val()
+            }, function(data){
+                alert("Name Updated");
+                location.reload();
+            });
         });
 
     });

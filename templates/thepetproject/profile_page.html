@@ -3,57 +3,61 @@
     {% block embedded-css %}
         <link rel="stylesheet" href="{% static 'profile-page.css' %}" type="text/css">
     {% endblock %}
-    {% block title_append %} {{ userprofile.user }} {% endblock %}
+    {% block title_append %} {{ userprofile_page.user }} {% endblock %}
     {% block main_content %}
-        <div id="profile-head">
-            {% if userprofile.picture %}
-                <img src="{{ MEDIA_URL }}{{ userprofile.picture }}" alt={{userprofile.picture}} />
-            {% else %}
-                <img src="{{ MEDIA_URL }}default-profile.jpg" alt="Profile Picture" />
-            {% endif %}
-                <span id = "profile-info">
-                {{ userprofile.name }}<br/>
-                @{{ userprofile.user }}<br/>
-                Joined: {{ userprofile.date_joined|date:"d/m/Y" }}<br/>
-            </span>
-            {% if user.is_authenticated %}
-                {% if user.username == userprofile.user.username %}
-                    <a href="{% url 'thepetproject:myaccount' %}">My Account</a>
-                {% endif %}
-            {% endif %}
-        </div>
-
-        <section id="profile-posts-comments-container">
-            <div id="profile-recent-posts">
-                <h2>Recent Posts</h2>
-                {% if recent_posts %}
-                    {% for post in recent_posts %}
-                        <span class="post">
-                            <img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/>
-                            <span class="recent-posts-caption">{{ post.caption }}</span><br/>
-                            <span class="recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
-                        </span>
-                    {% endfor %}
+        {% if user_exists %}
+            <div id="profile-head">
+                {% if userprofile_page.picture %}
+                    <img src="{{ MEDIA_URL }}{{ userprofile_page.picture }}" alt={{userprofile_page.picture}} />
                 {% else %}
-                    <strong>This user has no posts.</strong>
+                    <img src="{{ MEDIA_URL }}default-profile.jpg" alt="Profile Picture" />
+                {% endif %}
+                    <span id = "profile-info">
+                    {{ userprofile_page.name }}<br/>
+                    @{{ userprofile_page.user }}<br/>
+                    Joined: {{ userprofile_page.date_joined|date:"d/m/Y" }}<br/>
+                </span>
+                {% if user.is_authenticated %}
+                    {% if user.username == userprofile_page.user.username %}
+                        <a href="{% url 'thepetproject:myaccount' %}">My Account</a>
+                    {% endif %}
                 {% endif %}
             </div>
 
-            <div id="profile-top-comments">
-                <h2>Top Comments</h2>
-                {% if top_comments %}
-                    {% for comment in top_comments %}
-                        <span class="comment">
-                            <a href="">
-                                <span id="top-section"><p id=''>{{ comment.text }}</p><p>{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</p></span>
-                                <span id = "bottom-section"></span>
-                            </a>
-                        </span>
+            <section id="profile-posts-comments-container">
+                <div id="profile-recent-posts">
+                    <h2>Recent Posts</h2>
+                    {% if recent_posts %}
+                        {% for post in recent_posts %}
+                            <span class="post">
+                                <img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/>
+                                <span class="recent-posts-caption">{{ post.caption }}</span><br/>
+                                <span class="recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
+                            </span>
+                        {% endfor %}
+                    {% else %}
+                        <strong>This user has no posts.</strong>
+                    {% endif %}
+                </div>
 
-                    {% endfor %}
-                {% else %}
-                    <strong>This user hasn't made any comments.</strong>
-                {% endif %}
-            </div>
-        </section>
+                <div id="profile-top-comments">
+                    <h2>Top Comments</h2>
+                    {% if top_comments %}
+                        {% for comment in top_comments %}
+                            <span class="comment">
+                                <a href="">
+                                    <span id="top-section"><p id=''>{{ comment.text }}</p><p>{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</p></span>
+                                    <span id = "bottom-section"></span>
+                                </a>
+                            </span>
+
+                        {% endfor %}
+                    {% else %}
+                        <strong>This user hasn't made any comments.</strong>
+                    {% endif %}
+                </div>
+            </section>
+        {% else %}
+            <strong>That user doesn't exist.</strong>
+        {% endif %}
     {% endblock %}
