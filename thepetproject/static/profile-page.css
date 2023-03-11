@@ -19,6 +19,7 @@
     max-height:200px;
     width:auto;
     height:auto;
+    object-fit: contain;
 }
 
 .post span{
@@ -32,7 +33,6 @@
 }
 
 .post{
-    width: 33.33%;
     max-width: 100%;
     height: auto;
 }
