@@ -19,7 +19,7 @@ def profile_page(request, username=None):
                 username = request.user.username
                 
         userprofile = UserProfile.objects.get(user=User.objects.get(username=username))
-        posts = Post.objects.filter(user=userprofile).order_by('-date_posted').order_by('-time_posted')[:3]
+        posts = Post.objects.filter(user=userprofile).order_by('-date_posted', '-time_posted')[:3]
         comments = Comment.objects.filter(user=userprofile).order_by('-likes')[:3]
         context_dict['userprofile'] = userprofile
         context_dict['recent_posts'] = posts

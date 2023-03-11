@@ -17,7 +17,6 @@
 .post img{
     display:inline;
     max-height:200px;
-    max-width:35%;
     width:auto;
     height:auto;
 }
@@ -30,4 +29,16 @@
 
 .comment{
     text-decoration: none;
+}
+
+.post{
+    width: 33.33%;
+    max-width: 100%;
+    height: auto;
+}
+
+#profile-recent-posts{
+    display: flex;
+    justify-content: space-between;
+    width: 70vw;
 }
