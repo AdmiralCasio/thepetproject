@@ -13,7 +13,7 @@
                     <img src="{{ MEDIA_URL }}default-profile.jpg" alt="Profile Picture" />
                 {% endif %}
                     <span id = "profile-info">
-                    {{ userprofile_page.name }}<br/>
+                    <strong>{{ userprofile_page.name }}</strong><br/>
                     @{{ userprofile_page.user }}<br/>
                     Joined: {{ userprofile_page.date_joined|date:"d/m/Y" }}<br/>
                 </span>

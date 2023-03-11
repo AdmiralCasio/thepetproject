@@ -27,7 +27,7 @@ Homepage
         <img src="{{ MEDIA_URL }}MissingImage.png" alt="An image of someones pet" class ="pic">
     {% endif %}
         <div class = "grid">
-            <p class="name"><b>Username:</b> {{ post.user.name }}</p>
+            <p class="name"><b>Username:</b> @{{ post.user.user }}</p>
             <p class="date"><b>Date Posted:</b> {{ post.date_posted }}</p>
             <p class="caption"><b>Caption:</b> {{ post.caption }}</p>
             <p class="likes"><b>Likes:</b> {{ post.likes }}</p>
