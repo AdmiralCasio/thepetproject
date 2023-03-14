@@ -7,6 +7,7 @@ View Post
     <style>
         #post{border-color: black;
             border-style: solid;
+            margin-left: 12%;
             }
         #title_and_image{border-color: black;
             border-left-style: none;
@@ -18,22 +19,6 @@ View Post
             border-right-style:none;
             border-top-style: solid;
             border-bottom-style: none;}
-        #like_post{
-                    margin-right: 10px;
-                    margin-left: 20px;           
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-                    border-style: none;
-                    color: black;
-                    background-color: gray;}
-        #comment_post{
-                    margin-right: 10px;
-                    margin-left: 20px;           
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-                    border-style: none;
-                    color: black;
-                    background-color: gray;}
         
         #like_and_comment_info{
             float: right;
@@ -42,8 +27,10 @@ View Post
             clear: both;
             border-color: black;
             border-style: solid;
-            margin-top: 20px;
-            margin-bottom: 20px;}
+            margin-top: 2%;
+            margin-bottom: 2%;
+            margin-left: 12%;}
+        #comments_section h1{margin-left: 1%}
         #comment_info{border-color: black;
             border-left-style: none;
             border-right-style:none;
@@ -55,23 +42,22 @@ View Post
             border-right-style:none;
             border-top-style: solid;
             border-bottom-style: none;}
-        #like_comment button{margin-left: 20px;
-                            margin-top: 20px;
-                            margin-bottom: 20px;
-                            background-color: gray;
-                            border-style: none;
-                            color: black}
         #like_comment p{float: right;
                         margin-right: 10px;}
-        #user_info{float:left;}
+        #user_info{float:left;
+                    margin-left: 1%}
         #time_info{float:right;
                     margin-right: 10px;}
         #comment_text{clear: both;
                     border-top-style: solid;}
+        #comment_text p {margin-left: 1%}
         #comment_form{display: none;}
         </style>
     {% endblock %}
-    <!-- <script src="jquery.js"></script>
+
+    {% block embedded-js %}
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
 
@@ -107,27 +93,31 @@ View Post
             var formToShow="#comment_form"
             $(formToShow).show()
         }
-    </script> -->
-{% block main_content %}
+    </script>
+    {% endblock %}
 
-<div id = "post">
-    <div id="title_and_image">
-    <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
-    </div>
-    <div>
-        <p>{{ post.caption }}</p>
-    </div>
-    <div id="like_and_comment">
+    {% block main_content %}
+
+    <div id = "post">
+        <div id="title_and_image">
+        <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
+        </div>
+        <div>
+            <p>{{ post.caption }}</p>
+        </div>
+        <div id="like_and_comment">
             {% if user.is_authenticated %}
-                <button id="like_post" onclick="like('{{ post.post_id }}', true)">Like</button>
                 {% if user_has_liked_post %}
-                    likeFormatting("#like_post")
+                <button id="like_post" onclick="like('{{ post.post_id }}', true)" onload="likeButtonFormatting('#like_post')">Like</button>
+                {% else %}
+                <button id="like_post" onclick="like('{{ post.post_id }}', true)">Like</button>
                 {% endif %}
             <button id="comment_post" onClick="commentPost()">Comment</button>
             {% endif %}
         <div id="like_and_comment_info">
             <p>{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>
     </div>
+</div>
 </div>
     <div id="comments_section">
         <h1>Comments</h1>
@@ -141,9 +131,10 @@ View Post
         </div>
         <div id = "like_comment">
             {% if user.is_authenticated %}
-                <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
                 {% if user_has_liked_comment %}
-                    likeFormatting("#like_comment_button")
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)" onload="likeButtonFormatting('#like_comment_button')">Like</button>
+                {% else %}
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
                 {% endif %}
             {% endif %}
             <p>{{ comment.likes }} Likes<p>

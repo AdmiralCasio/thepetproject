@@ -24,7 +24,12 @@ header #heading{height: 22%;
         width: 11%;
         height: 11%;
         float: left;}
-button {margin: 10px;
+#login button {margin: 10px;
+        background-color: #236807;
+        border-color: white;
+        color: white;}
+
+.sidebar button {margin: 10px;
         background-color: #236807;
         border-color: white;
         color: white;}
