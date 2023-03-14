@@ -145,10 +145,3 @@ def register(request):
     return render(request, 'thepetproject/sign-up.html', {'user_form': user_form,
                                                    'profile_form': profile_form,
                                                    'registered': registered})
-    
-@login_required
-def delete_account(request):
-    user = User.objects.get(username=request.user.username)
-    logout(request)
-    user.delete()
-    return redirect(reverse('thepetproject:index'))
