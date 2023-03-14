@@ -72,21 +72,16 @@ def create_comment(request, post_id):
     url = 'thepetproject/create_comment.html'
     return render(request, url, context=context_dict)
 
-def add_comment(request):
-    post_id = request.GET("post_id")
+def add_comment(request, post_id):
+
     post = Post.objects.get(post_id=post_id)
     comment_text = request.POST("comment_text")
     current_user = request.user
     new_comment = Comment.get_or_create(user_id =current_user.user_id, post_id = post_id, text = comment_text)
     new_comment.save()
-    url = 'thepetproject/posts/' + post_id
+    url = "thepetproject/view_individual_post.html"
     context_dict = get_view_post_context_dict(request)
     return render(request, url, context=context_dict)
-
-    post_list = Post.objects.order_by('-likes')[:3]
-    context_dict = {}
-    context_dict['posts'] = post_list
-    return render(request, 'thepetproject/index.html', context=context_dict)
 
 def profile_page(request, username):
     context_dict = {}

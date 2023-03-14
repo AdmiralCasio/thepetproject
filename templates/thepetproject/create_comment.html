@@ -11,7 +11,7 @@ Create Comment
             var defaultText = "Your comment goes here..."
             var output = $(toSend).text
             if (output == defaultText) {
-                alert("Please enter your comment.")
+                
                 return false;
             }
             else{
@@ -19,8 +19,13 @@ Create Comment
             }
         }
         function new_comment(){
-            var redirectURL = "{% url 'thepetproject:add_comment' post.post_id %}";
-            location.href = redirectURL;
+            if (validateForm){
+                var redirectURL = "TODO add comment";
+                location.href = redirectURL;
+            }
+            else{
+                alert("Please enter your comment.")
+            }
 
         }
     </script>

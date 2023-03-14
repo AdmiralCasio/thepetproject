@@ -92,9 +92,7 @@ View Post
         }
         function commentPost(post_id){
             //location.href found at: https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page
-            location.href=''
             var redirectURL = "{% url 'thepetproject:create_comment' post.post_id %}";
-            alert(redirectURL);
             location.href= redirectURL;
         }
     </script>
