@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 import os
+from wad2groupproject import settings
 
 class UserProfile(models.Model):   
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -15,6 +16,11 @@ class UserProfile(models.Model):
         return os.path.join(self.user.username, filename)
     
     picture = models.ImageField(blank = True, upload_to=get_correct_directory)
+    
+    def save(self, *args, **kwargs):
+        if (not self.picture):
+            self.picture = os.path.join('default-profile.jpg')
+        super(UserProfile, self).save(*args, **kwargs)
         
 class Post(models.Model):
     post_id = models.AutoField(primary_key=True)

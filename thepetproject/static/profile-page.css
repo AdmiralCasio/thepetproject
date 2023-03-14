@@ -42,3 +42,18 @@
     justify-content: space-between;
     width: 70vw;
 }
+
+#profile-head a{
+    float:right;
+}
+
+#profile-head{
+    position:relative;
+}
+
+#profile-info{
+    position:relative;
+    top:0;
+    right:0;
+    
+}

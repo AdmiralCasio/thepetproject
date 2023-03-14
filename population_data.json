@@ -19,12 +19,12 @@
         "password": "password123", 
         "name": "Stacey McLain",
         "date_joined": "2022-09-09",
-        "picture":"cat.jpg"},
+        "picture":"cat.webp"},
         {"username": "catlover5",
         "password":"password123",
         "name":"James Smith",
         "date_joined":"2022-01-02",
-        "picture":"6710.webp"
+        "picture":null
         },
         {"username":"doglover6",
         "password":"password123",

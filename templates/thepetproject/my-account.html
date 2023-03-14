@@ -6,12 +6,7 @@ My Account
 {% endblock %}
 
 {% block embedded-css %}
-<style>
-    #profile-picture{
-        width:100px;
-        height:100px;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'my-account.css' %}" type="text/css">
 {% endblock %}
 
 {% block main_content %}
@@ -60,6 +55,17 @@ My Account
                 alert("Name Updated");
                 location.reload();
             });
+        });
+
+        $("#delete-account").click(function(){
+            if (window.confirm("Are you sure you want to delete your account? All of your data - posts, profile and comments - will be lost.")){
+                $.post("",{
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'type':'delete'
+                }, function(data){
+                    console.log("done");
+                });
+            }
         });
 
     });

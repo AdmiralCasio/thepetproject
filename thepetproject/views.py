@@ -46,41 +46,48 @@ def profile_page(request, username=None):
         
     except User.DoesNotExist:
         context_dict['user_exists'] = False
-        #return redirect(reverse('thepetproject:user-not-found'))
-    
+            
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
  
 @login_required      
 def my_account(request):
-    user = UserProfile.objects.get(user=request.user)
-    image_path_list = user.picture.path.split('\\')
-    context_dict = {'userprofile':user}
-    if request.method == "POST":
-        if request.POST.get('type') == None:
-            form = ChangeProfilePictureForm(request.POST, request.FILES, instance=user)
-            if form.is_valid():
-                image_path = os.path.join(settings.MEDIA_DIR, user.user.username, image_path_list[-1])
-                if os.path.exists(image_path):
-                    os.remove(image_path)
-                form.save()
-            else:
-                print(form.errors)
-        elif request.POST.get('type') == 'password':
-            user.user.set_password(request.POST.get('password'))
-            user.user.save()
-            return HttpResponse({'status':1})
-        elif request.POST.get('type') == 'name':
-            user.name = request.POST.get('name')
-            user.save()
-            return HttpResponse({'status':1})
-    else:
-        form = ChangeProfilePictureForm()
+    try:
+        user = UserProfile.objects.get(user=request.user)
+        image_path_list = user.picture.path.split('\\')
+        context_dict = {'userprofile':user}
+        if request.method == "POST":
+            if request.POST.get('type') == None:
+                form = ChangeProfilePictureForm(request.POST, request.FILES, instance=user)
+                if form.is_valid():
+                    image_path = os.path.join(settings.MEDIA_DIR, user.user.username, image_path_list[-1])
+                    if os.path.exists(image_path):
+                        os.remove(image_path)
+                    form.save()
+                else:
+                    print(form.errors)
+            elif request.POST.get('type') == 'password':
+                user.user.set_password(request.POST.get('password'))
+                user.user.save()
+                return HttpResponse({'status':1})
+            elif request.POST.get('type') == 'name':
+                user.name = request.POST.get('name')
+                user.save()
+                return HttpResponse({'status':1}) 
+            elif request.POST.get('type') == 'delete':
+                print("Deleting...")
+                User.objects.get(username=request.user.username).delete()
+                print("Deleted")
+                
+        else:
+            form = ChangeProfilePictureForm()
 
-        context_dict['profilepictureform'] = form
+            context_dict['profilepictureform'] = form
+            
         
-    
-    return render(request, 'thepetproject/my-account.html', context=context_dict)
-
+        return render(request, 'thepetproject/my-account.html', context=context_dict)
+    except:
+        return redirect(reverse('thepetproject:index'))
+                
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -96,7 +103,7 @@ def user_login(request):
                 return HttpResponse("Your account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponse("Invalid login details supplied. <a href=" + reverse("thepetproject:login") + ">Go back</a>")
     else:
         return render(request, 'thepetproject/login.html')
 
@@ -139,4 +146,9 @@ def register(request):
                                                    'profile_form': profile_form,
                                                    'registered': registered})
     
-    
+@login_required
+def delete_account(request):
+    user = User.objects.get(username=request.user.username)
+    logout(request)
+    user.delete()
+    return redirect(reverse('thepetproject:index'))
