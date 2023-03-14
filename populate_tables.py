@@ -7,76 +7,19 @@ django.setup()
 from PIL import Image
 from datetime import date
 
+import json
 from thepetproject.models import UserProfile, Post, Comment, UserHasLikedComment, UserHasLikedPost
 from django.contrib.auth.models import User
 
 def populate():
-    users = [
-        {'username': 'jeremyjohn145',
-        'password': 'password123',
-        'name': 'Jeremy John',
-        'date_joined': '2022-01-02',
-        'picture': 'cat.jpg'},
-        {'username': 'johnboy69',
-        'password': 'password123',
-        'name': 'John Billingsley',
-        'date_joined': '2022-03-04',
-        'picture':None},
-        {'username': 'jesus',
-        'password': 'password123',
-        'name': 'Jesus, Son of Christ',
-        'date_joined': '2022-03-02',
-        'picture':'jesus.jpg'},
-        {'username': 'yecats',
-        'password': 'password123', 
-        'name': 'Stacey McLain',
-        'date_joined': '2022-09-09',
-        'picture':'cat.jpg'}
+    with open("population_data.json") as f:
+        data = json.load(f)
         
-        # {
-        #     'username': ,
-        #     'password': ,
-        #     'name': ,
-        #     'date_joined': 
-        # }
-    ]
-    
-    posts = [
-        {'caption': "isn't he cute",
-         'date_posted': '2023-04-06',
-         'time_posted': '14:50:22',
-         'likes': 1,
-         'number_of_comments': 1,
-         'posted_by': 'jesus',
-         'liked_by': ['yecats'],
-         'image': '09012022_112903.mov.00_00_28_21.Still001.jpg'},
-        {'caption': "he's so small!",
-         'date_posted': '2023-05-04',
-         'time_posted': '13:45:32',
-         'likes': 1,
-         'number_of_comments': 1,
-         'posted_by': 'yecats',
-         'liked_by': ['jesus'],
-         'image': 'IMG-20230308-WA0013.jpg'}
-    ]
-    
-    comments = [
-        {'text': "this is nice",
-         'likes': 0,
-         'date_posted': '2023-05-04',
-         'time_posted': '14:12:12',
-         'posted_by': 'johnboy69',
-         'posted_on': 2,
-         'liked_by': ['jesus']},
-        {'text': "this isn't nice",
-         'likes': 1,
-         'date_posted': '2023-06-14',
-         'time_posted': '13:02:12',
-         'posted_by': 'jeremyjohn145',
-         'posted_on': 1,
-         'liked_by': ['yecats'],
-         }
-    ]
+        users = data[0]
+        
+        posts = data[1]
+        
+        comments = data[2]
     
     user_list = []
     post_list = []
@@ -100,7 +43,8 @@ def populate():
 
 def add_user(username, password, name, date_joined, image_path=None):
     if not User.objects.filter(username=username).exists():
-        user = User.objects.create_user(username=username, password=password)
+        user = User.objects.create_user(username=username)
+        user.set_password(password)
     else:
         user = User.objects.get(username=username)
     user_profile = UserProfile.objects.get_or_create(user=user, name=name, date_joined=date_joined)[0]

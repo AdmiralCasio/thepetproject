@@ -25,9 +25,9 @@
             </div>
 
             <section id="profile-posts-comments-container">
+            <h2>Recent Posts</h2>
                 <div id="profile-recent-posts">
-                    <h2>Recent Posts</h2>
-                    {% if recent_posts %}
+                        {% if recent_posts %}
                         {% for post in recent_posts %}
                             <span class="post">
                                 <img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/>
@@ -35,6 +35,7 @@
                                 <span class="recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
                             </span>
                         {% endfor %}
+                    </br>
                     {% else %}
                         <strong>This user has no posts.</strong>
                     {% endif %}
