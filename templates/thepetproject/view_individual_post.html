@@ -74,6 +74,7 @@ View Post
             }
 
         function like(postOrCommentID, isPost){
+            alert('like attempted')
             if (isPost){
                 var buttonToEdit = "#like_post"
                 var like_url = "templates/thepetproject/like&comment_or_post_id=" + postOrCommentID + "&isPost=True"
@@ -89,9 +90,12 @@ View Post
             xhttp.onreadystatechange = update_likes_on_page(xhttp);
             likeButtonFormatting(buttonToEdit);
         }
-        function commentPost(){
-            var formToShow="#comment_form"
-            $(formToShow).show()
+        function commentPost(post_id){
+            //location.href found at: https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page
+            location.href=''
+            var redirectURL = "{% url 'thepetproject:create_comment' post.post_id %}";
+            alert(redirectURL);
+            location.href= redirectURL;
         }
     </script>
     {% endblock %}
@@ -112,7 +116,7 @@ View Post
                 {% else %}
                 <button id="like_post" onclick="like('{{ post.post_id }}', true)">Like</button>
                 {% endif %}
-            <button id="comment_post" onClick="commentPost()">Comment</button>
+            <button id="comment_post" onClick="commentPost('{{ post.post_id }}')">Comment</button>
             {% endif %}
         <div id="like_and_comment_info">
             <p>{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>

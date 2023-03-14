@@ -65,14 +65,11 @@ def view_individual_post(request, post_id):
     url = 'thepetproject/view_individual_post.html'
     return render(request, url , context = context_dict)
 
-def create_comment(request):
-    post_id = request.GET("post_id")
-    post = Post.objects.get(post_id=post_id)
-    comment_text = request.POST("comment_text")
-    current_user = request.user
-    context_dict = get_view_post_context_dict(request)
+def create_comment(request, post_id):
 
-    url = 'thepetproject/posts/'+ post_id + 'create-comment'
+    post = Post.objects.get(post_id = post_id)
+    context_dict = {'post': post}
+    url = 'thepetproject/create_comment.html'
     return render(request, url, context=context_dict)
 
 def add_comment(request):
