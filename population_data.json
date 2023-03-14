@@ -100,7 +100,15 @@
          "posted_by":"johnboy69",
          "number_of_comments":0,
          "time_posted":"13:02:12",
-         "image":"rabbit.jpg"}
+         "image":"rabbit.jpg"},
+        {"caption":"I don't recognise this one",
+         "date_posted":"2023-04-06",
+         "liked_by":["doglover6"],
+         "likes":1,
+         "number_of_comments":0,
+         "time_posted":"13:02:12",
+         "image":"parrot.jpg",
+         "posted_by":"catlover5"}
     ],
 
     [
@@ -117,7 +125,34 @@
          "time_posted": "13:02:12",
          "posted_by": "jeremyjohn145",
          "posted_on": 1,
-         "liked_by": ["yecats"]
-         }
+         "liked_by": ["yecats"]},
+        {"posted_on":3,
+         "text":"how charming",
+         "date_posted":"2023-03-04",
+         "liked_by":["animalsrlife", "jeremyjohn145", "jesus"],
+         "likes":3,
+         "posted_by":"catlover5",
+         "time_posted":"13:45:32"},
+        {"posted_on":4,
+         "text":"bob's your uncle",
+         "date_posted":"2023-03-02",
+         "liked_by":["catlover5"],
+         "likes":1,
+         "posted_by":"jesus",
+         "time_posted":"13:02:12"},
+        {"posted_on":5,
+         "date_posted":"2023-06-25",
+         "liked_by":["animalsrlife"],
+         "likes":1,
+         "posted_by":"catlover5",
+         "text":"not a cat tho is it",
+         "time_posted":"13:02:12"},
+        {"posted_on":5,
+         "date_posted":"2023-06-25",
+         "liked_by":[],
+         "likes":0,
+         "posted_by":"doglover6",
+         "text":"not as good as my dog!",
+         "time_posted":"13:45:32"}
     ]
 ]
