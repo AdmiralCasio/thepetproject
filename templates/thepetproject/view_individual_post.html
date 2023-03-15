@@ -76,21 +76,17 @@ View Post
         function like(postOrCommentID, isPost){
             //Use JSON response for returning request
             //https://docs.djangoproject.com/en/4.1/ref/request-response/
-            var like_url = "{% url 'thepetproject:like' post.post_id %}" + "?comment_or_post_id=" + postOrCommentID
             if (isPost){
+                var like_url = "{% url 'thepetproject:like_post' post.post_id %}"
                 var buttonToEdit = "#like_post"
-                like_url = like_url + "&isPost=True"
             }
             else{
+                var like_url = "{% url 'thepetproject:like_comment' post.post_id comment.comment_id %}"
                 var buttonToEdit = "#like_comment_button"
-                like_url = like_url + "&isPost=False"
             }
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", like_url, true);
             xhttp.send();
-            if (!isPost){
-                alert("xhttp sent: " + like_url)
-            }
             xhttp.onreadystatechange = update_likes_on_page(xhttp);
             likeButtonFormatting(buttonToEdit);
         }
@@ -120,7 +116,7 @@ View Post
             <button id="comment_post" onClick="commentPost('{{ post.post_id }}')">Comment</button>
             {% endif %}
         <div id="like_and_comment_info">
-            <p>{{ post.number_of_comments }} comments     {{ post.likes }} Likes</p>
+            <p>{{ post.number_of_comments }} comments     {{ post.likes }} likes</p>
     </div>
 </div>
 </div>
@@ -142,9 +138,9 @@ View Post
                     <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
                 {% endif %}
             {% endif %}
-            <p>{{ comment.likes }} Likes<p>
+            <p>{{ comment.likes }} likes<p>
         </div>
         {% endif %}
     </div>
-
+    <h1> {{ liked_comment.comment_id }}</h1>
 {% endblock %}

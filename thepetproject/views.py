@@ -10,25 +10,27 @@ from django.urls import reverse
 def index(request):
     return render(request, 'thepetproject/index.html')
 
-def like(request, post_id):
+def like_comment(request, post_id, comment_id):
 
-    comment_or_post_id = request.GET.get('comment_or_post_id')
-    isPost = request.GET.get('isPost')
-    context_dict = get_view_post_context_dict(request, post_id)
+    user_profile = UserProfile.objects.get(user=request.user)
+    post = Post.objects.get(post_id=post_id)
+    comment = Comment.objects.get(comment_id=comment_id)
+    user_likes_comment_instance = UserHasLikedComment.objects.get_or_create(comment=comment, user=user_profile)
+    if user_likes_comment_instance[1]:
+        comment.likes += 1
+        comment.save()
+
+
+    return view_individual_post(request, post_id)
+
+def like_post(request, post_id):
+
     user_profile = UserProfile.objects.get(user = request.user)
-    if isPost:
-        post = Post.objects.get(post_id = post_id)
-        user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
-        if user_likes_post_instance[1]:
-            post.likes += 1
-            post.save()
-    else:
-        comment = Comment.objects.get(comment_id = comment_or_post_id)
-        user_likes_comment_instance = UserHasLikedComment.objects.get_or_create(comment = comment, user = user_profile)[0]
-        if user_likes_comment_instance[1]:
-            comment.likes += 1
-            comment.save()
-
+    post = Post.objects.get(post_id=post_id)
+    user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
+    if user_likes_post_instance[1]:
+        post.likes += 1
+        post.save()
     return view_individual_post(request, post_id)
 
 def get_view_post_context_dict(request, post_id):
