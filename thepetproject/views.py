@@ -19,13 +19,15 @@ def like(request, post_id):
     if isPost:
         post = Post.objects.get(post_id = post_id)
         user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
-        post.likes += 1
-        post.save()
+        if user_likes_post_instance[1]:
+            post.likes += 1
+            post.save()
     else:
-        comment = Comment.get(comment_id = comment_or_post_id)
-        user_likes_comment_instance = UserHasLikedComment.get_or_create(comment = comment, user = user_profile)
-        comment.likes += 1
-        comment.save()
+        comment = Comment.objects.get(comment_id = comment_or_post_id)
+        user_likes_comment_instance = UserHasLikedComment.objects.get_or_create(comment = comment, user = user_profile)[0]
+        if user_likes_comment_instance[1]:
+            comment.likes += 1
+            comment.save()
 
     return view_individual_post(request, post_id)
 

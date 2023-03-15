@@ -88,6 +88,9 @@ View Post
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", like_url, true);
             xhttp.send();
+            if (!isPost){
+                alert("xhttp sent: " + like_url)
+            }
             xhttp.onreadystatechange = update_likes_on_page(xhttp);
             likeButtonFormatting(buttonToEdit);
         }
@@ -100,7 +103,6 @@ View Post
     {% endblock %}
 
     {% block main_content %}
-    <h1> id for like = {{ comment_or_post_id }}, isPost = {{ isPost }}</h1>
     <div id = "post">
         <div id="title_and_image">
         <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
