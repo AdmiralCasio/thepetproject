@@ -76,16 +76,23 @@ def create_comment(request, post_id):
 
     post = Post.objects.get(post_id = post_id)
     context_dict = {'post': post}
+
+    if request.method == "POST":
+        form = CreateCommentForm(request.POST)
+    else:
+        form = CreateCommentForm()
+    context_dict['form'] = form
+    if form.is_valid():
+        form.save(commit=True)
+        url = "thepetproject/view_individual_post.html"
+        context_dict = get_view_post_context_dict(request)
+        return render(request, url, context=context_dict)
+    else:
+        print(form.errors)
+
     url = 'thepetproject/create_comment.html'
     return render(request, url, context=context_dict)
 
-def add_comment(request, post_id):
-
-    # form = CreateCommentForm()
-
-    url = "thepetproject/view_individual_post.html"
-    context_dict = get_view_post_context_dict(request)
-    return render(request, url, context=context_dict)
 
 def profile_page(request, username):
     context_dict = {}
