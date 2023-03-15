@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from thepetproject.models import UserProfile, Post, Comment, UserHasLikedPost, UserHasLikedComment
 
 from thepetproject.models import UserProfile, Post, Comment
@@ -11,7 +11,7 @@ def index(request):
     return render(request, 'thepetproject/index.html')
 
 def like_comment(request, post_id, comment_id):
-
+    # JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
     user_profile = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(post_id=post_id)
     comment = Comment.objects.get(comment_id=comment_id)
@@ -20,18 +20,19 @@ def like_comment(request, post_id, comment_id):
         comment.likes += 1
         comment.save()
 
-
-    return view_individual_post(request, post_id)
+    response = {"likes": str(post.likes)}
+    return JsonResponse(response)
 
 def like_post(request, post_id):
-
+    #JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
     user_profile = UserProfile.objects.get(user = request.user)
     post = Post.objects.get(post_id=post_id)
     user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
     if user_likes_post_instance[1]:
         post.likes += 1
         post.save()
-    return view_individual_post(request, post_id)
+    response = {"likes": str(post.likes)}
+    return JsonResponse(response)
 
 def get_view_post_context_dict(request, post_id):
 
@@ -44,13 +45,13 @@ def get_view_post_context_dict(request, post_id):
     current_user = request.user
     user_profile = UserProfile.objects.get(user = current_user)
     try:
-        has_user_liked_post = UserHasLikedPost.get(user_id = current_user.user_id, post_id = post_id)
+        has_user_liked_post = UserHasLikedPost.get(user = current_user, post = post)
     except:
         has_user_liked_post = False
     else:
         has_user_liked_post = True
     try:
-        has_user_liked_comment = UserHasLikedComment.get(user_id = current_user.user_id, post_id = post_id)
+        has_user_liked_comment = UserHasLikedComment.get(user = current_user, comment = comment)
     except:
         has_user_liked_comment = False
     else:

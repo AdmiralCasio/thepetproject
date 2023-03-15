@@ -67,15 +67,8 @@ View Post
             $(buttonToEdit).css("border-color", "white");
         }
 
-        function update_likes_on_page(xhttp){
-                var textToEdit = "#like_and_comment_info";
-                var newText = "{{ post.number_of_comments }} comments     " + xhttp.responseText + " Likes"
-                $(textToEdit).$("p").text = newText;
-            }
-
         function like(postOrCommentID, isPost){
-            //Use JSON response for returning request
-            //https://docs.djangoproject.com/en/4.1/ref/request-response/
+        
             if (isPost){
                 var like_url = "{% url 'thepetproject:like_post' post.post_id %}"
                 var buttonToEdit = "#like_post"
@@ -87,9 +80,31 @@ View Post
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", like_url, true);
             xhttp.send();
-            xhttp.onreadystatechange = update_likes_on_page(xhttp);
-            likeButtonFormatting(buttonToEdit);
+            if (isPost){
+                xhttp.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                    var newLikes = JSON.parse(this.responseText);
+                    newLikes = newLikes.likes;
+                    var textToEdit = "#like_and_comment_info_output";
+                    var newText = "{{ post.number_of_comments }} comments     " + newLikes + " likes";
+                    $(textToEdit).text(newText);
+                }
+            };
         }
+        else{
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    var newLikes = JSON.parse(this.responseText);
+                    newLikes = newLikes.likes;
+                    var textToEdit = "#comment_likes";
+                    var newText = newLikes + " likes";
+                    $(textToEdit).text(newText);
+                }
+            };
+        }
+        likeButtonFormatting(buttonToEdit);
+    }
+    
         function commentPost(post_id){
             //location.href found at: https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page
             var redirectURL = "{% url 'thepetproject:create_comment' post.post_id %}";
@@ -116,7 +131,7 @@ View Post
             <button id="comment_post" onClick="commentPost('{{ post.post_id }}')">Comment</button>
             {% endif %}
         <div id="like_and_comment_info">
-            <p>{{ post.number_of_comments }} comments     {{ post.likes }} likes</p>
+            <p id="like_and_comment_info_output">{{ post.number_of_comments }} comments     {{ post.likes }} likes</p>
     </div>
 </div>
 </div>
@@ -138,7 +153,7 @@ View Post
                     <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
                 {% endif %}
             {% endif %}
-            <p>{{ comment.likes }} likes<p>
+            <p id="comment_likes">{{ comment.likes }} likes<p>
         </div>
         {% endif %}
     </div>
