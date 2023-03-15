@@ -6,6 +6,8 @@ from thepetproject.models import UserProfile, Post, Comment
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from thepetproject.forms import CreateCommentForm
+
 
 def index(request):
     return render(request, 'thepetproject/index.html')
@@ -45,22 +47,22 @@ def get_view_post_context_dict(request, post_id):
     current_user = request.user
     user_profile = UserProfile.objects.get(user = current_user)
     try:
-        has_user_liked_post = UserHasLikedPost.get(user = current_user, post = post)
-    except:
+        has_user_liked_post = UserHasLikedPost.objects.get(user = user_profile, post = post)
+    except UserHasLikedPost.DoesNotExist:
         has_user_liked_post = False
     else:
         has_user_liked_post = True
     try:
-        has_user_liked_comment = UserHasLikedComment.get(user = current_user, comment = comment)
-    except:
+        has_user_liked_comment = UserHasLikedComment.objects.get(user = user_profile, comment = comment)
+    except UserHasLikedComment.DoesNotExist:
         has_user_liked_comment = False
     else:
         has_user_liked_comment = True
 
     context_dict = {'post': post, 'comment': comment, 'user': current_user, 'post_user': post_user,
                     'user_profile': user_profile,
-                    'has_user_liked_post': has_user_liked_post,
-                    'has_user_liked_comment': has_user_liked_comment}
+                    'user_has_liked_post': has_user_liked_post,
+                    'user_has_liked_comment': has_user_liked_comment}
 
     return context_dict
 def view_individual_post(request, post_id):
@@ -79,11 +81,8 @@ def create_comment(request, post_id):
 
 def add_comment(request, post_id):
 
-    post = Post.objects.get(post_id=post_id)
-    comment_text = request.POST("comment_text")
-    current_user = request.user
-    new_comment = Comment.get_or_create(user_id =current_user.user_id, post_id = post_id, text = comment_text)
-    new_comment.save()
+    # form = CreateCommentForm()
+
     url = "thepetproject/view_individual_post.html"
     context_dict = get_view_post_context_dict(request)
     return render(request, url, context=context_dict)

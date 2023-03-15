@@ -124,7 +124,7 @@ View Post
         <div id="like_and_comment">
             {% if user.is_authenticated %}
                 {% if user_has_liked_post %}
-                <button id="like_post" onclick="like('{{ post.post_id }}', true)" onload="likeButtonFormatting('#like_post')">Like</button>
+                <button id="like_post" onclick="like('{{ post.post_id }}', true)" style="background-color: red;">Like</button>
                 {% else %}
                 <button id="like_post" onclick="like('{{ post.post_id }}', true)">Like</button>
                 {% endif %}
@@ -148,7 +148,7 @@ View Post
         <div id = "like_comment">
             {% if user.is_authenticated %}
                 {% if user_has_liked_comment %}
-                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)" onload="likeButtonFormatting('#like_comment_button')">Like</button>
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)" style="background-color: red;">Like</button>
                 {% else %}
                     <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
                 {% endif %}
