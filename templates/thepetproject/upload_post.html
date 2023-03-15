@@ -1,16 +1,21 @@
 {% extends 'thepetproject/base.html' %}
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
+{% block embedded-css %}
+        <link rel="stylesheet" href="{% static 'upload-post.css' %}" type="text/css">
+{% endblock %}
 {% block title_append %} Upload Post {% endblock %}
 {% block main_content %}
     {% if submitted %}
         Post Uploaded Succesfully.
     {% else %}
-        <h1 id="form-head">Upload Post</h1><br>
-        <form id="upload_post_form" method="POST" action="{% url 'thepetproject:upload_post_page %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" name="submit" value="Post">
-        </form>
+        <div id="form-section">
+            <h1 id="form-head">Upload Post</h1><br>
+            <form id="upload_post_form" method="POST" action="{% url 'thepetproject:upload_post_page' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input id="submit-button" type="submit" name="submit" value="Post">
+            </form>
+        </div>
     {% endif %}
 {% endblock %}

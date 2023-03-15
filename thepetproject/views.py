@@ -33,16 +33,17 @@ def profile_page(request, username=None):
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
 
 def upload_post_page(request):
-    sumbitted = False
+    submitted = False
     
     if request.method =="POST":
         form = UploadPostForm(request.POST)
         if form.is_valid():
             post = form.save()
-            post.user = user
+            post.user = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
             post.date_posted = date.today()
             post.time_posted = time.localtime()
             post.save()
+            submitted=True
             return HttpResponseRedirect('thepetproject/upload_post_page')
         else:
             print(form.errors)
@@ -50,4 +51,4 @@ def upload_post_page(request):
     else:
         form = UploadPostForm
 
-    return render(request, 'thepetproject/upload_post_page.html', {'form':form, 'submitted':submitted})
+    return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted})
