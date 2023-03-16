@@ -73,7 +73,7 @@ def get_view_post_context_dict(request, post_id):
         has_user_liked_comment = True
 
     context_dict = {'post': post, 'comment': comment, 'user': current_user, 'post_user': post_user,
-                    'user_profile': user_profile,
+                    'userprofile': user_profile,
                     'user_has_liked_post': has_user_liked_post,
                     'user_has_liked_comment': has_user_liked_comment}
 
@@ -97,7 +97,6 @@ def create_comment(request, post_id):
     context_dict['form'] = form
 
     if form.is_valid():
-
         comment = form.save(commit=False)
         comment.post_id = post_id
         current_user = UserProfile.objects.get(user = request.user)
@@ -125,8 +124,8 @@ def profile_page(request, username=None):
                 username = request.user.username
         
         userprofile_page = UserProfile.objects.get(user=User.objects.get(username=username))
-        posts = Post.objects.filter(user=userprofile).order_by('-date_posted').order_by('-time_posted')[:3]
-        comments = Comment.objects.filter(user=userprofile).order_by('-likes')[:3]
+        posts = Post.objects.filter(user=userprofile_page).order_by('-date_posted').order_by('-time_posted')[:3]
+        comments = Comment.objects.filter(user=userprofile_page).order_by('-likes')[:3]
         
         context_dict['userprofile_page'] = userprofile_page
         context_dict['recent_posts'] = posts

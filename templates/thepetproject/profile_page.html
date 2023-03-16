@@ -46,10 +46,16 @@
                     {% if top_comments %}
                         {% for comment in top_comments %}
                             <span class="comment">
-                                <a href="">
-                                    <span id="top-section"><p id=''>{{ comment.text }}</p><p>{{ comment.date_posted|date:'d/m/Y' }} {{ comment.time_posted|time:'H:i' }}</p></span>
-                                    <span id = "bottom-section"></span>
-                                </a>
+                                <div id="comment_info">
+                                    <p id="user_info">{{ comment.user.name }} (@ {{ comment.user }})</p>
+                                       <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
+                                   </div>
+                                   <div id="comment_text">
+                                    <a href="{% url 'thepetproject:view_individual_post' comment.post.post_id %}"><p>{{ comment.text }}</p></a>
+                                   </div>
+                                   <div id = "like_comment">
+                                       <p id="comment_likes">{{ comment.likes }} likes<p>
+                                   </div>
                             </span>
 
                         {% endfor %}

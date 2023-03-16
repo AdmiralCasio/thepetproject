@@ -30,7 +30,6 @@ def populate():
     for post in posts:
         post_list.append(add_post(post['caption'], post['date_posted'], post['time_posted'], post['posted_by'], post['likes'], post['number_of_comments'], post['liked_by'], image_path=post['image']))
         
-    #TODO: Comment adding
     for comment in comments:
         add_comment(comment['text'], comment['date_posted'], comment['time_posted'], comment['posted_by'], comment['posted_on'], comment['likes'], comment['liked_by'])
         
