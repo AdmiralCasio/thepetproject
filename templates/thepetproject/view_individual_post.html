@@ -4,55 +4,7 @@
 View Post
 {% endblock %}
     {% block embedded-css %}
-    <style>
-        #post{border-color: black;
-            border-style: solid;
-            margin-left: 12%;
-            }
-        #title_and_image{border-color: black;
-            border-left-style: none;
-            border-right-style:none;
-            border-top-style: none;
-            border-bottom-style: solid;}
-        #like_and_comment{border-color: black;
-            border-left-style: none;
-            border-right-style:none;
-            border-top-style: solid;
-            border-bottom-style: none;}
-        
-        #like_and_comment_info{
-            float: right;
-            margin-right: 10px;}
-        #comments_section{
-            clear: both;
-            border-color: black;
-            border-style: solid;
-            margin-top: 2%;
-            margin-bottom: 2%;
-            margin-left: 12%;}
-        #comments_section h1{margin-left: 1%}
-        #comment_info{border-color: black;
-            border-left-style: none;
-            border-right-style:none;
-            border-top-style: none;
-            border-bottom-style: solid;}
-        #like_comment{
-            border-color: black;
-            border-left-style: none;
-            border-right-style:none;
-            border-top-style: solid;
-            border-bottom-style: none;}
-        #like_comment p{float: right;
-                        margin-right: 10px;}
-        #user_info{float:left;
-                    margin-left: 1%}
-        #time_info{float:right;
-                    margin-right: 10px;}
-        #comment_text{clear: both;
-                    border-top-style: solid;}
-        #comment_text p {margin-left: 1%}
-        #comment_form{display: none;}
-        </style>
+    <link rel="stylesheet" href="{% static 'view_individual_post.css' %}" type="text/css">
     {% endblock %}
 
     {% block embedded-js %}
