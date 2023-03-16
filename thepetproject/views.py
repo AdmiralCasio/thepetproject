@@ -57,8 +57,11 @@ def get_view_post_context_dict(request, post_id):
         comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
     except:
         comment = None
-    current_user = request.user
-    user_profile = UserProfile.objects.get(user = current_user)
+    try:
+        current_user = request.user
+        user_profile = UserProfile.objects.get(user = current_user)
+    except:
+        user_profile = None;
     try:
         has_user_liked_post = UserHasLikedPost.objects.get(user = user_profile, post = post)
     except UserHasLikedPost.DoesNotExist:
@@ -73,7 +76,7 @@ def get_view_post_context_dict(request, post_id):
         has_user_liked_comment = True
 
     context_dict = {'post': post, 'comment': comment, 'user': current_user, 'post_user': post_user,
-                    'userprofile': user_profile,
+                    'user_profile': user_profile,
                     'user_has_liked_post': has_user_liked_post,
                     'user_has_liked_comment': has_user_liked_comment}
 
@@ -97,6 +100,7 @@ def create_comment(request, post_id):
     context_dict['form'] = form
 
     if form.is_valid():
+
         comment = form.save(commit=False)
         comment.post_id = post_id
         current_user = UserProfile.objects.get(user = request.user)
