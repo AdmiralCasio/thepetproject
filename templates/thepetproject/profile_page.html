@@ -30,7 +30,7 @@
                         {% if recent_posts %}
                         {% for post in recent_posts %}
                             <span class="post">
-                                <img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/>
+                                <a href="{% url 'thepetproject:view_individual_post' post.post_id %}"><img src="{{ MEDIA_URL }}{{ post.image }}" alt={{ post.image }} /><br/></a>
                                 <span class="recent-posts-caption">{{ post.caption }}</span><br/>
                                 <span class="recent-posts-date">{{ post.date_posted|date:'d/m/Y' }}</span>
                             </span>
