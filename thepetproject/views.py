@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from thepetproject.models import UserProfile, Post, Comment, UserHasLikedPost, UserHasLikedComment
@@ -82,10 +84,16 @@ def create_comment(request, post_id):
     else:
         form = CreateCommentForm()
     context_dict['form'] = form
+
     if form.is_valid():
-        form.save(commit=True)
+
+        comment = form.save(commit=False)
+        comment.post_id = post_id
+        current_user = UserProfile.objects.get(user = request.user)
+        comment.user = current_user
+        comment.save()
         url = "thepetproject/view_individual_post.html"
-        context_dict = get_view_post_context_dict(request)
+        context_dict = get_view_post_context_dict(request, post_id)
         return render(request, url, context=context_dict)
     else:
         print(form.errors)

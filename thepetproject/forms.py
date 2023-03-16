@@ -10,10 +10,9 @@ class CreateCommentForm(forms.ModelForm):
 
 
     text = forms.CharField(max_length = 1000, help_text="Your comment:")
-    likes = forms.IntegerField(widget = forms.HiddenInput(), initial=0)
     date_posted = forms.DateField(widget = forms.HiddenInput(), initial=date.today())
-    time_posted = forms.TimeField(widget = forms.HiddenInput(), initial=datetime.now())
+    time_posted = forms.TimeField(widget = forms.HiddenInput(), initial=datetime.now().time())
 
     class Meta:
         model = Comment
-        fields = ('text', 'likes', 'date_posted', 'time_posted')
+        fields = ('text', 'date_posted', 'time_posted')
