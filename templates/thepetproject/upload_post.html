@@ -7,7 +7,9 @@
 {% block title_append %} Upload Post {% endblock %}
 {% block main_content %}
     {% if submitted %}
-        Post Uploaded Succesfully.
+        <div id="success-block">
+            <h1>Post Uploaded Succesfully.</h1>
+        </div>
     {% else %}
         <div id="form-section">
             <h1 id="form-head">Upload Post</h1><br>

@@ -4,7 +4,7 @@ from thepetproject.models import UserProfile, Post, Comment
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .forms import UploadPostForm
-from datetime import date,time
+from datetime import date,datetime
 
 def index(request):
 
@@ -36,15 +36,17 @@ def upload_post_page(request):
     submitted = False
     
     if request.method =="POST":
-        form = UploadPostForm(request.POST)
+        form = UploadPostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save()
-            post.user = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+            post = form.save(commit=False)
+            post.user = UserProfile.objects.get(user = request.user)
+            if 'image' in request.FILES:
+                post.image=request.FILES['image']
             post.date_posted = date.today()
-            post.time_posted = time.localtime()
+            post.time_posted = datetime.now().time()
             post.save()
             submitted=True
-            return HttpResponseRedirect('thepetproject/upload_post_page')
+            return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted})
         else:
             print(form.errors)
         

@@ -2,6 +2,11 @@
     text-align: center;
     display: block;
 }
+#success-block{
+    display:block
+    margin: auto;
+    width: 50%;
+}
 #caption-style{
     width=50%;
     resize:none;
@@ -28,7 +33,6 @@
     width: 50%;
     padding: 10px;
 }
-
 #upload_post_form {
     margin: auto;
     width: 50%;
