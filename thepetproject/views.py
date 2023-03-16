@@ -237,3 +237,16 @@ def register(request):
     return render(request, 'thepetproject/sign-up.html', {'user_form': user_form,
                                                    'profile_form': profile_form,
                                                    'registered': registered})
+
+def view_posts(request):
+    user_profile = None
+    post_list = Post.objects
+    try:
+        if request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        print("Error")
+    context_dict = {}
+    context_dict['posts'] = post_list
+    context_dict['userprofile'] = user_profile
+    return render(request, 'thepetproject/view_posts.html', context=context_dict)
