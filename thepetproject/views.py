@@ -57,8 +57,11 @@ def get_view_post_context_dict(request, post_id):
         comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
     except:
         comment = "none"
-    current_user = request.user
-    user_profile = UserProfile.objects.get(user = current_user)
+    try:
+        current_user = request.user
+        user_profile = UserProfile.objects.get(user = current_user)
+    except:
+        user_profile = None;
     try:
         has_user_liked_post = UserHasLikedPost.objects.get(user = user_profile, post = post)
     except UserHasLikedPost.DoesNotExist:
