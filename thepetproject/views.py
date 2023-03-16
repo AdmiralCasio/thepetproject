@@ -240,7 +240,7 @@ def register(request):
 
 def view_posts(request):
     user_profile = None
-    post_list = Post.objects
+    post_list = Post.objects.all()
     try:
         if request.user.is_authenticated:
             user_profile = UserProfile.objects.get(user=request.user)

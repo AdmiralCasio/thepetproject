@@ -1,0 +1,32 @@
+
+{% extends "thepetproject/base.html" %}
+{% load staticfiles %}
+<head>
+{% block title_append %}
+Homepage
+{% endblock %}
+
+{% block embedded-css %}
+<link rel="stylesheet" href="{% static 'view_posts.css' %}" type="text/css">
+{% endblock %}
+</head>
+
+<body>
+{% block main_content %}
+
+<div class="grid">
+    {% for post in posts %}
+    <div class="post">
+       {% if post.image.url is not None %}
+            <a href="{% url 'thepetproject:view_individual_post' post.post_id %}"> <img src="{{ MEDIA_URL }}{{ post.image }}" alt="An image of someones pet" class ="pic"></a>
+        {% else %}
+             <img src="{{ MEDIA_URL }}MissingImage.png" alt="An image of someones pet" class ="pic">
+        {% endif %}
+            <p class="caption"><b>Caption:</b> {{ post.caption }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+</body>
