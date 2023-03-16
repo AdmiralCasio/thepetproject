@@ -8,6 +8,12 @@
             border-right-style:none;
             border-top-style: none;
             border-bottom-style: solid;}
+        #title_and_image img{width: 20%;
+                            height: 20%;
+                            margin-left: 40%;
+                            margin-right: 40%;
+                            margin-top: 5%;
+                            margin-bottom: 5%;}
         #like_and_comment{border-color: black;
             border-left-style: none;
             border-right-style:none;
