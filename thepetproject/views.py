@@ -24,7 +24,7 @@ def like_comment(request, post_id, comment_id):
         comment.likes += 1
         comment.save()
 
-    response = {"likes": str(post.likes)}
+    response = {"likes": str(comment.likes)}
     return JsonResponse(response)
 
 def like_post(request, post_id):
