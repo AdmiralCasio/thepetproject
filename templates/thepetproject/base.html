@@ -8,6 +8,8 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
         {% block embedded-css %}
         {% endblock %}
+        {% block embedded-js %}
+        {% endblock %}
     </head>
     <body>
         <header>
@@ -24,13 +26,14 @@
             </div>
         </header>
         <section id="sidebar-main-content">
-            <div id="sidebar">
+            <div class="sidebar">
                 <ul>
                     <li><a href="{% url 'thepetproject:index' %}"><button type="button">Homepage</button></a></li>
                     <li><button>View Posts</button></li>
-                    {% if user.logged_in %}
-                    <li><button>Upload Post</button></li>
-                    {% endif %}
+                    <li>{% if user.is_authenticated %}
+                        <button>Upload Post</button>
+                        {% endif %}
+                    </li>
                 </ul>
             </div>
             <div id="main">
