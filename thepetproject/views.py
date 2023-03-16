@@ -124,7 +124,7 @@ def profile_page(request, username=None):
                 username = request.user.username
         
         userprofile_page = UserProfile.objects.get(user=User.objects.get(username=username))
-        posts = Post.objects.filter(user=userprofile_page).order_by('-date_posted').order_by('-time_posted')[:3]
+        posts = Post.objects.filter(user=userprofile_page).order_by('-date_posted', '-time_posted')[:3]
         comments = Comment.objects.filter(user=userprofile_page).order_by('-likes')[:3]
         
         context_dict['userprofile_page'] = userprofile_page
