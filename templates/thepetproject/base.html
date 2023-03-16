@@ -29,7 +29,7 @@
             <div class="sidebar">
                 <ul>
                     <li><a href="{% url 'thepetproject:index' %}"><button type="button">Homepage</button></a></li>
-                    <li><button>View Posts</button></li>
+                    <li><a href="{% url 'thepetproject:view_posts' %}"><button>View Posts</button></a></li>
                     <li>{% if user.is_authenticated %}
                         <button>Upload Post</button>
                         {% endif %}
