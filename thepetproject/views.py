@@ -1,16 +1,16 @@
+
 from datetime import date
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
-from thepetproject.models import UserProfile, Post, Comment
+from django.http import HttpResponse, JsonResponse, Http404
+from thepetproject.models import UserProfile, Post, Comment, UserHasLikedPost, UserHasLikedComment
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from thepetproject.forms import UserForm, UserProfileForm, ChangeProfilePictureForm
+from thepetproject.forms import UserForm, UserProfileForm, ChangeProfilePictureForm, CreateCommentForm
 import os
 from django.conf import settings
-
 
 def index(request):
     user_profile = None
@@ -24,6 +24,94 @@ def index(request):
     context_dict['posts'] = post_list
     context_dict['userprofile'] = user_profile
     return render(request, 'thepetproject/index.html', context=context_dict)
+
+def like_comment(request, post_id, comment_id):
+    # JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
+    user_profile = UserProfile.objects.get(user=request.user)
+    post = Post.objects.get(post_id=post_id)
+    comment = Comment.objects.get(comment_id=comment_id)
+    user_likes_comment_instance = UserHasLikedComment.objects.get_or_create(comment=comment, user=user_profile)
+    if user_likes_comment_instance[1]:
+        comment.likes += 1
+        comment.save()
+
+    response = {"likes": str(comment.likes)}
+    return JsonResponse(response)
+
+def like_post(request, post_id):
+    #JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
+    user_profile = UserProfile.objects.get(user = request.user)
+    post = Post.objects.get(post_id=post_id)
+    user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
+    if user_likes_post_instance[1]:
+        post.likes += 1
+        post.save()
+    response = {"likes": str(post.likes)}
+    return JsonResponse(response)
+
+def get_view_post_context_dict(request, post_id):
+
+    post = Post.objects.get(post_id=post_id)
+    post_user = UserProfile.objects.get(user_id = post.user_id)
+    try:
+        comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
+    except:
+        comment = "none"
+    current_user = request.user
+    user_profile = UserProfile.objects.get(user = current_user)
+    try:
+        has_user_liked_post = UserHasLikedPost.objects.get(user = user_profile, post = post)
+    except UserHasLikedPost.DoesNotExist:
+        has_user_liked_post = False
+    else:
+        has_user_liked_post = True
+    try:
+        has_user_liked_comment = UserHasLikedComment.objects.get(user = user_profile, comment = comment)
+    except UserHasLikedComment.DoesNotExist:
+        has_user_liked_comment = False
+    else:
+        has_user_liked_comment = True
+
+    context_dict = {'post': post, 'comment': comment, 'user': current_user, 'post_user': post_user,
+                    'user_profile': user_profile,
+                    'user_has_liked_post': has_user_liked_post,
+                    'user_has_liked_comment': has_user_liked_comment}
+
+    return context_dict
+def view_individual_post(request, post_id):
+
+    context_dict = get_view_post_context_dict(request, post_id)
+
+    url = 'thepetproject/view_individual_post.html'
+    return render(request, url , context = context_dict)
+
+def create_comment(request, post_id):
+
+    post = Post.objects.get(post_id = post_id)
+    context_dict = {'post': post}
+
+    if request.method == "POST":
+        form = CreateCommentForm(request.POST)
+    else:
+        form = CreateCommentForm()
+    context_dict['form'] = form
+
+    if form.is_valid():
+
+        comment = form.save(commit=False)
+        comment.post_id = post_id
+        current_user = UserProfile.objects.get(user = request.user)
+        comment.user = current_user
+        comment.save()
+        url = "thepetproject/view_individual_post.html"
+        context_dict = get_view_post_context_dict(request, post_id)
+        return render(request, url, context=context_dict)
+    else:
+        print(form.errors)
+
+    url = 'thepetproject/create_comment.html'
+    return render(request, url, context=context_dict)
+
 
 def profile_page(request, username=None):
     context_dict = {'user_exists':True}
@@ -48,6 +136,7 @@ def profile_page(request, username=None):
         context_dict['user_exists'] = False
             
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
+
  
 @login_required      
 def my_account(request):

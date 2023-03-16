@@ -1,0 +1,161 @@
+{% extends 'thepetproject/base.html' %}
+{% load staticfiles %}
+{% block title_append %}
+View Post
+{% endblock %}
+    {% block embedded-css %}
+    <style>
+        #post{border-color: black;
+            border-style: solid;
+            margin-left: 12%;
+            }
+        #title_and_image{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: none;
+            border-bottom-style: solid;}
+        #like_and_comment{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: solid;
+            border-bottom-style: none;}
+        
+        #like_and_comment_info{
+            float: right;
+            margin-right: 10px;}
+        #comments_section{
+            clear: both;
+            border-color: black;
+            border-style: solid;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            margin-left: 12%;}
+        #comments_section h1{margin-left: 1%}
+        #comment_info{border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: none;
+            border-bottom-style: solid;}
+        #like_comment{
+            border-color: black;
+            border-left-style: none;
+            border-right-style:none;
+            border-top-style: solid;
+            border-bottom-style: none;}
+        #like_comment p{float: right;
+                        margin-right: 10px;}
+        #user_info{float:left;
+                    margin-left: 1%}
+        #time_info{float:right;
+                    margin-right: 10px;}
+        #comment_text{clear: both;
+                    border-top-style: solid;}
+        #comment_text p {margin-left: 1%}
+        #comment_form{display: none;}
+        </style>
+    {% endblock %}
+
+    {% block embedded-js %}
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+        function likeButtonFormatting(buttonToEdit){
+            $(buttonToEdit).css("background-color", "red");//"#236807");
+            $(buttonToEdit).css("color", "white");
+            $(buttonToEdit).css("border-color", "white");
+        }
+
+        function like(postOrCommentID, isPost){
+        
+            if (isPost){
+                var like_url = "{% url 'thepetproject:like_post' post.post_id %}"
+                var buttonToEdit = "#like_post"
+            }
+            else{
+                var like_url = "{% url 'thepetproject:like_comment' post.post_id comment.comment_id %}"
+                var buttonToEdit = "#like_comment_button"
+            }
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", like_url, true);
+            xhttp.send();
+            if (isPost){
+                xhttp.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                    var newLikes = JSON.parse(this.responseText);
+                    newLikes = newLikes.likes;
+                    var textToEdit = "#like_and_comment_info_output";
+                    var newText = "{{ post.number_of_comments }} comments     " + newLikes + " likes";
+                    $(textToEdit).text(newText);
+                }
+            };
+        }
+        else{
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    var newLikes = JSON.parse(this.responseText);
+                    newLikes = newLikes.likes;
+                    var textToEdit = "#comment_likes";
+                    var newText = newLikes + " likes";
+                    $(textToEdit).text(newText);
+                }
+            };
+        }
+        likeButtonFormatting(buttonToEdit);
+    }
+    
+        function commentPost(post_id){
+            //location.href found at: https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page
+            var redirectURL = "{% url 'thepetproject:create_comment' post.post_id %}";
+            location.href= redirectURL;
+        }
+    </script>
+    {% endblock %}
+
+    {% block main_content %}
+    <div id = "post">
+        <div id="title_and_image">
+        <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
+        </div>
+        <div>
+            <p>{{ post.caption }}</p>
+        </div>
+        <div id="like_and_comment">
+            {% if user.is_authenticated %}
+                {% if user_has_liked_post %}
+                <button id="like_post" onclick="like('{{ post.post_id }}', true)" style="background-color: red;">Like</button>
+                {% else %}
+                <button id="like_post" onclick="like('{{ post.post_id }}', true)">Like</button>
+                {% endif %}
+            <button id="comment_post" onClick="commentPost('{{ post.post_id }}')">Comment</button>
+            {% endif %}
+        <div id="like_and_comment_info">
+            <p id="like_and_comment_info_output">{{ post.number_of_comments }} comments     {{ post.likes }} likes</p>
+    </div>
+</div>
+</div>
+    <div id="comments_section">
+        <h1>Comments</h1>
+        {% if comment != "none" %}
+        <div id="comment_info">
+         <p id="user_info">{{ comment.user.name }} (@ {{ comment.user }})</p>
+            <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
+        </div>
+        <div id="comment_text">
+        <p>{{ comment.text }}</p>
+        </div>
+        <div id = "like_comment">
+            {% if user.is_authenticated %}
+                {% if user_has_liked_comment %}
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)" style="background-color: red;">Like</button>
+                {% else %}
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false)">Like</button>
+                {% endif %}
+            {% endif %}
+            <p id="comment_likes">{{ comment.likes }} likes<p>
+        </div>
+        {% endif %}
+    </div>
+    <h1> {{ liked_comment.comment_id }}</h1>
+{% endblock %}
