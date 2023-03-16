@@ -57,3 +57,33 @@
     right:0;
     
 }
+
+#comments_section{
+    clear: both;
+    border-color: black;
+    border-style: solid;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 12%;}
+#comments_section h1{margin-left: 1%}
+#comment_info{border-color: black;
+    border-left-style: none;
+    border-right-style:none;
+    border-top-style: none;
+    border-bottom-style: solid;}
+#like_comment{
+    border-color: black;
+    border-left-style: none;
+    border-right-style:none;
+    border-top-style: solid;
+    border-bottom-style: none;}
+#like_comment p{float: right;
+                margin-right: 10px;}
+#user_info{float:left;
+            margin-left: 1%}
+#time_info{float:right;
+            margin-right: 10px;}
+#comment_text{clear: both;
+            border-top-style: solid;}
+#comment_text p {margin-left: 1%}
+#comment_form{display: none;}

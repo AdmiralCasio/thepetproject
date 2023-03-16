@@ -56,7 +56,7 @@ def get_view_post_context_dict(request, post_id):
     try:
         comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
     except:
-        comment = "none"
+        comment = None
     try:
         current_user = request.user
         user_profile = UserProfile.objects.get(user = current_user)
