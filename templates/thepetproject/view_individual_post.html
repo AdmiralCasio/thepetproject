@@ -13,17 +13,27 @@ View Post
 
     <script type="text/javascript">
 
-        function likeButtonFormatting(buttonToEdit){
-            $(buttonToEdit).css("background-color", "red");//"#236807");
-            $(buttonToEdit).css("color", "white");
-            $(buttonToEdit).css("border-color", "white");
+        function likeButtonFormatting(buttonToEdit, isUnlike){
+            if (!isUnlike){
+                $(buttonToEdit).css("background-color", "red");//"#236807");
+                $(buttonToEdit).css("color", "white");
+                $(buttonToEdit).css("border-color", "white");
+            }
+            else{
+                $(buttonToEdit).css("background-color", "#236807");
+                $(buttonToEdit).css("color", "white");
+                $(buttonToEdit).css("border-color", "white");
+            }
         }
 
         function like(postOrCommentID, isPost){
-        
+            
+            var isUnlike = false;
+
             if (isPost){
-                var like_url = "{% url 'thepetproject:like_post' post.post_id %}"
-                var buttonToEdit = "#like_post"
+                var like_url = "{% url 'thepetproject:like_post' post.post_id %}";
+                var buttonToEdit = "#like_post";
+                var oldLikes = "{{ post.likes }}";
             }
             else{
                 var like_url = "{% url 'thepetproject:like_comment' post.post_id comment.comment_id %}"
@@ -54,7 +64,10 @@ View Post
                 }
             };
         }
-        likeButtonFormatting(buttonToEdit);
+        if (newLikes == oldLikes - 1){
+            isUnlike = true;
+        }
+        likeButtonFormatting(buttonToEdit, isUnlike);
     }
     
         function commentPost(post_id){

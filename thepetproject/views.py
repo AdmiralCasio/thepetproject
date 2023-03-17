@@ -27,6 +27,7 @@ def index(request):
 
 def like_comment(request, post_id, comment_id):
     # JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
+    # .delete() found at: https://stackoverflow.com/questions/3805958/how-to-delete-a-record-in-django-models
     user_profile = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(post_id=post_id)
     comment = Comment.objects.get(comment_id=comment_id)
@@ -34,18 +35,28 @@ def like_comment(request, post_id, comment_id):
     if user_likes_comment_instance[1]:
         comment.likes += 1
         comment.save()
+    else:
+        comment.likes -= 1
+        comment.save()
+        user_likes_comment_instance[0].delete()
 
     response = {"likes": str(comment.likes)}
     return JsonResponse(response)
 
 def like_post(request, post_id):
     #JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
+    # .delete() found at: https://stackoverflow.com/questions/3805958/how-to-delete-a-record-in-django-models
     user_profile = UserProfile.objects.get(user = request.user)
     post = Post.objects.get(post_id=post_id)
     user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
     if user_likes_post_instance[1]:
         post.likes += 1
         post.save()
+    else:
+        post.likes -= 1
+        post.save()
+        user_likes_post_instance[0].delete()
+
     response = {"likes": str(post.likes)}
     return JsonResponse(response)
 
