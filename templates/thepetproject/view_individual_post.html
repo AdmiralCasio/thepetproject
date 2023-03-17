@@ -23,9 +23,9 @@ View Post
         <div id="like_and_comment">
             {% if user.is_authenticated %}
                 {% if user_has_liked_post %}
-                <button id="like_post" onclick="like('{{ post.post_id }}', true, true, {{ post.likes }}, {% url 'thepetproject:like_post' post.post_id %}, {{ post.number_of_comments }})" style="background-color: red;">Like</button>
+                <button id="like_post" onclick="like('{{ post.post_id }}', true, true, {{ post.likes }}, '{% url 'thepetproject:like_post' post.post_id %}', {{ post.number_of_comments }})" style="background-color: red;">Like</button>
                 {% else %}
-                <button id="like_post" onclick="like('{{ post.post_id }}', true, false, {{ post.likes }}, {% url 'thepetproject:like_post' post.post_id %}, {{ post.number_of_comments }})">Like</button>
+                <button id="like_post" onclick="like('{{ post.post_id }}', true, false, {{ post.likes }}, '{% url 'thepetproject:like_post' post.post_id %}', {{ post.number_of_comments }})">Like</button>
                 {% endif %}
             <button id="comment_post" onClick="commentPost('{{ post.post_id }}')">Comment</button>
             {% endif %}
@@ -47,9 +47,9 @@ View Post
         <div id = "like_comment">
             {% if user.is_authenticated %}
                 {% if user_has_liked_comment %}
-                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, true, {{ comment.likes }}, {% url 'thepetproject:like_comment' comment.comment_id %},  0)" style="background-color: red;">Like</button>
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, true, {{ comment.likes }}, '{% url 'thepetproject:like_comment' post.post_id comment.comment_id %}',  0)" style="background-color: red;">Like</button>
                 {% else %}
-                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, false, {{ comment.likes }}, {% url 'thepetproject:like_comment' comment.comment_id %}, 0)">Like</button>
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, false, {{ comment.likes }}, '{% url 'thepetproject:like_comment' post.post_id comment.comment_id %}', 0)">Like</button>
                 {% endif %}
             {% endif %}
             <p id="comment_likes">{{ comment.likes }} likes<p>
