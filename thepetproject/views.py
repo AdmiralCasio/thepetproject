@@ -120,6 +120,8 @@ def create_comment(request, post_id):
         current_user = UserProfile.objects.get(user = request.user)
         comment.user = current_user
         comment.save()
+        post.number_of_comments += 1
+        post.save()
         url = "thepetproject/view_individual_post.html"
         context_dict = get_view_post_context_dict(request, post_id)
         return render(request, url, context=context_dict)
@@ -153,6 +155,27 @@ def profile_page(request, username=None):
         context_dict['user_exists'] = False
             
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
+
+def user_profile_posts(request, username=None):
+    context_dict = {'user_exists':True}
+    userprofile = None
+    if request.user.is_authenticated:
+            userprofile = UserProfile.objects.get(user=request.user)
+    context_dict['userprofile'] = userprofile
+    try:
+        if not username:
+            if request.user.is_authenticated:
+                username = request.user.username
+        
+        userprofile_page = UserProfile.objects.get(user=User.objects.get(username=username))
+        posts = Post.objects.filter(user=userprofile_page).order_by('-date_posted', '-time_posted')
+        
+        context_dict['userprofile_page'] = userprofile_page
+        context_dict['posts'] = posts        
+    except User.DoesNotExist:
+        context_dict['user_exists'] = False
+            
+    return render(request, 'thepetproject/user_profile_posts.html', context=context_dict)
 
 @login_required
 def upload_post_page(request):
