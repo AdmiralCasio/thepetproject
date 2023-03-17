@@ -8,7 +8,6 @@
             $(buttonToEdit).css("border-color", "white");
         }
         else{
-            alert("change back to green")
             $(buttonToEdit).css("background-color", "red");
             $(buttonToEdit).css("color", "white");
             $(buttonToEdit).css("border-color", "white");
@@ -18,40 +17,57 @@
 
     function like(postOrCommentID, isPost, isUnlike, likes, url, number_of_comments=0){
         // Multiple arguments in url code found at: https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+        var newLikes = 0;
+        var oldLikes = 0;
+        var checkLikes = 0;
         if (isPost){
             var like_url = url;
             var buttonToEdit = "#like_post";
-            var oldLikes = likes;
         }
         else if (postOrCommentID){
             var like_url = url
             var buttonToEdit = "#like_comment_button"
-            var oldLikes = likes;
         }
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", like_url, true);
         xhttp.send();
-        alert(isUnlike)
-        alert(oldLikes)
         if (isPost){
             xhttp.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                var newLikes = JSON.parse(this.responseText);
-                newLikes = newLikes.likes.new;
+                likesJSON = JSON.parse(this.responseText);
+                newLikes = likesJSON.likes.new;
+                oldLikes = likesJSON.likes.old;
                 var textToEdit = "#like_and_comment_info_output";
                 var newText = number_of_comments + " comments " + newLikes + " likes";
                 $(textToEdit).text(newText);
+                checkLikes = oldLikes - 1
+                if (newLikes == checkLikes && isUnlike == false){
+                    isUnlike = true;
+                }
+                else if (newLikes != checkLikes && isUnlike == true){
+                    isUnlike = false;
+                }
+                likeButtonFormatting(buttonToEdit, isUnlike);
             }
         };
     }
     else{
         xhttp.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-                var newLikes = JSON.parse(this.responseText);
-                newLikes = newLikes.likes;
+                likesJSON = JSON.parse(this.responseText);
+                newLikes = likesJSON.likes.new;
+                oldLikes = likesJSON.likes.old;
                 var textToEdit = "#comment_likes";
                 var newText = newLikes + " likes";
                 $(textToEdit).text(newText);
+                checkLikes = oldLikes - 1
+                if (newLikes == checkLikes && isUnlike == false){
+                    isUnlike = true;
+                }
+                else if (newLikes != checkLikes && isUnlike == true){
+                    isUnlike = false;
+                }
+                likeButtonFormatting(buttonToEdit, isUnlike);
             }
         };
     }
