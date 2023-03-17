@@ -65,6 +65,7 @@ def like_post(request, post_id):
 def get_view_post_context_dict(request, post_id):
     post_exists = True
     context_dict = {}
+    user = None
     if request.user.is_authenticated:
         user = UserProfile.objects.get(user=request.user)  
     try:
