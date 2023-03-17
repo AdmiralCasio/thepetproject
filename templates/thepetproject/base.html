@@ -31,7 +31,7 @@
                     <li><a href="{% url 'thepetproject:index' %}"><button type="button">Homepage</button></a></li>
                     <li><a href="{% url 'thepetproject:view_posts' %}"><button>View Posts</button></a></li>
                     <li>{% if user.is_authenticated %}
-                        <button>Upload Post</button>
+                        <a href="{% url 'thepetproject:upload_post_page' %}"><button>Upload Post</button></a>
                         {% endif %}
                     </li>
                 </ul>
