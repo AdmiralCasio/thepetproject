@@ -1,6 +1,6 @@
-
 from django import forms
-from thepetproject.models import UserProfile, Comment
+from django.forms import ModelForm
+from thepetproject.models import UserProfile, Comment, Post
 from django.contrib.auth.models import User
 from datetime import datetime, date
 
@@ -34,3 +34,14 @@ class CreateCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('text', 'date_posted', 'time_posted')
+        
+class UploadPostForm(forms.ModelForm):
+    #code for adding id to form elements found at: https://stackoverflow.com/questions/29716023/add-class-to-form-field-django-modelform
+    caption=forms.CharField(widget=forms.Textarea)
+    class Meta:
+        model = Post
+        fields = ('image', 'caption',)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['caption'].widget.attrs.update({'id':'caption-style'})
+        self.fields['image'].widget.attrs.update({'id':'image-style'})

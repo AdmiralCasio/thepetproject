@@ -1,5 +1,5 @@
 
-from datetime import date
+from datetime import date,datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, Http404
 from thepetproject.models import UserProfile, Post, Comment, UserHasLikedPost, UserHasLikedComment
@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from thepetproject.forms import UserForm, UserProfileForm, ChangeProfilePictureForm, CreateCommentForm
+from thepetproject.forms import UserForm, UserProfileForm, ChangeProfilePictureForm, CreateCommentForm, UploadPostForm
 import os
 from django.conf import settings
 
@@ -151,6 +151,29 @@ def profile_page(request, username=None):
             
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
 
+@login_required
+def upload_post_page(request):
+    submitted = False
+    
+    if request.method =="POST":
+        form = UploadPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = UserProfile.objects.get(user = request.user)
+            if 'image' in request.FILES:
+                post.image=request.FILES['image']
+            post.date_posted = date.today()
+            post.time_posted = datetime.now().time()
+            post.save()
+            submitted=True
+            return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted})
+        else:
+            print(form.errors)
+        
+    else:
+        form = UploadPostForm
+
+    return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted})
  
 @login_required      
 def my_account(request):
