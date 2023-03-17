@@ -1,0 +1,41 @@
+{% extends 'thepetproject/base.html' %}
+{% load staticfiles %}
+    {% block embedded-css %}
+        <link rel="stylesheet" href="{% static 'user_posts.css' %}" type="text/css"/>
+    {% endblock %}
+    {% block title_append %} {{ userprofile_page.user }} {% endblock %}
+    {% block main_content %}
+        {% if user_exists %}
+            <div id="profile-head">
+                {% if userprofile_page.picture %}
+                    <img src="{{ MEDIA_URL }}{{ userprofile_page.picture }}" alt={{userprofile_page.picture}} />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}default-profile.jpg" alt="Profile Picture" />
+                {% endif %}
+                    <span id = "profile-info">
+                    <strong>{{ userprofile_page.name }}</strong><br/>
+                    @{{ userprofile_page.user }}<br/>
+                    Joined: {{ userprofile_page.date_joined|date:"d/m/Y" }}<br/>
+                </span>
+                {% if user.is_authenticated %}
+                    {% if user.username == userprofile_page.user.username %}
+                        <a href="{% url 'thepetproject:myaccount' %}">My Account</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <h2>All Posts</h2>
+            <div class="grid">
+                {% for post in posts %}
+                <div class="post">
+                   {% if post.image.url is not None %}
+                        <a href="{% url 'thepetproject:view_individual_post' post.post_id %}"> <img src="{{ MEDIA_URL }}{{ post.image }}" alt="An image of someones pet" class ="pic"></a>
+                    {% else %}
+                         <img src="{{ MEDIA_URL }}MissingImage.png" alt="An image of someones pet" class ="pic">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <strong>That user does not exist.</strong>
+        {% endif %}
+    {% endblock %}
