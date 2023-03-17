@@ -14,6 +14,11 @@
     margin: auto;
 }
 
+#profile-posts-comments-container a{
+    margin: auto;
+}
+
+
 .post img{
     display:inline;
     max-height:200px;
