@@ -1,0 +1,28 @@
+{% extends 'thepetproject/base.html' %}
+ {% load staticfiles %}
+
+ {% block title_append %}
+ Register
+ {% endblock %}
+
+ {% block main_content %}
+    <h1>Register for The Pet Project</h1>
+ {% if registered %}
+    <strong>Thank you for registering</strong>
+    <a href="{% url 'thepetproject:index' %}">Return to the homepage.</a><br />
+ {% else %}
+    <strong>Register here:</strong><br />
+    <form id="user_form" method="post" action="{% url 'thepetproject:sign-up' %}" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+
+    <input type="submit" name="submit" value="Register" />
+    </form>
+ {% endif %}
+   
+    <strong>If you have already registered, login here: <a href="{% url 'thepetproject:login' %}">login</a></strong>
+
+ {% endblock %}

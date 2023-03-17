@@ -1,0 +1,36 @@
+{% extends 'thepetproject/base.html' %}
+
+{% block title_append %}
+Create Comment
+{% endblock %}
+{% block embedded-js %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script>
+        function validateForm(){
+            var toSend="#comment_text"
+            var defaultText = "Your comment goes here..."
+            var output = $(toSend).text
+            if (output == defaultText) {
+                
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    </script>
+{% endblock %}
+{% block main_content %}
+<form onsubmit="validateForm()" action="{% url 'thepetproject:create_comment' post.post_id %}" method="post">
+    {% csrf_token %}
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+    {% endfor %}
+    {% for visible_field in form.visible_fields %}
+        {{ visible_field.errors }}
+        {{ visible_field.help_text }}
+        {{ visible_field }}
+    {% endfor %}
+    <br><br><input type="submit" name="create_comment" value="Create Comment">
+</form>
+{% endblock %}
