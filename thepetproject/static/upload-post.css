@@ -1,0 +1,44 @@
+#form-head{
+    text-align: center;
+    display: block;
+}
+#success-block{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+#success-block h1{
+    text-align: center;
+    display: block;
+}
+#caption-style{
+    width=50%;
+    resize:none;
+    margin: auto;
+    display:block;
+}
+#image-style{
+    align:center
+    display:inline-block;
+    margin: 10px;
+}
+#submit-button{
+    background:#236807;
+    width:30%;
+    color:white;
+    cursor:pointer;
+    margin:auto;
+    display:block;
+}
+#form-section{
+    border: 5px solid;
+    border-color:#236807;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+#upload_post_form {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
