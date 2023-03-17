@@ -25,7 +25,7 @@
             </div>
 
             <section id="profile-posts-comments-container">
-            <h2>Recent Posts</h2>
+            <h2>Recent Posts</h2> <a href="{% url 'thepetproject:user_posts' userprofile_page.user.username %}">View All</a>
                 <div id="profile-recent-posts">
                         {% if recent_posts %}
                         {% for post in recent_posts %}
@@ -47,7 +47,7 @@
                         {% for comment in top_comments %}
                             <span class="comment">
                                 <div id="comment_info">
-                                    <p id="user_info">{{ comment.user.name }} (@ {{ comment.user }})</p>
+                                    <p id="user_info">{{ comment.user.name }} (<a href="{% url 'thepetproject:profile_page' comment.user %}">@{{ comment.user }}</a>)</p>
                                        <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
                                    </div>
                                    <div id="comment_text">
