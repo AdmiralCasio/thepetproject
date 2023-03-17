@@ -71,12 +71,12 @@
             }
         };
     }
-    likeButtonFormatting(buttonToEdit, isUnlike);
-}
+        likeButtonFormatting(buttonToEdit, isUnlike);
+    }
 
-    function commentPost(post_id){
+    function commentPost(post_id, url){
         //location.href found at: https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page
-        var redirectURL = "{% url 'thepetproject:create_comment' post.post_id %}";
+        var redirectURL = url;
         location.href= redirectURL;
     }
 

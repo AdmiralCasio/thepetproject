@@ -1,0 +1,57 @@
+#profile-head img{
+    height:100px;
+    width:100px;
+    text-align: left;
+    display: inline-block;
+}
+
+#profile-info{
+    display:inline-block;
+    
+}
+
+#profile-head a{
+    float:right;
+}
+
+#profile-head{
+    position:relative;
+}
+
+#profile-info{
+    position:relative;
+    top:0;
+    right:0;
+    
+}
+
+.post{
+    color: #236807;
+    border: 2px black solid;
+    height: fit-content;
+    width: 300px ;
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+}
+
+.pic{
+    height: 300px;
+    width: 300px;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.grid{
+    margin-top:2vh;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+}
+
