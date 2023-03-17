@@ -63,43 +63,44 @@ def like_post(request, post_id):
     return JsonResponse(response)
 
 def get_view_post_context_dict(request, post_id):
-
-    post = Post.objects.get(post_id=post_id)
-    post_user = UserProfile.objects.get(user_id = post.user_id)
+    post_exists = True
+    context_dict = {}
+    if request.user.is_authenticated:
+        user = UserProfile.objects.get(user=request.user)  
     try:
-        comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
-    except:
-        comment = -1
-    try:
-        current_user = request.user
-        user_profile = UserProfile.objects.get(user = current_user)
-    except:
-        user_profile = None
-    try:
-        has_user_liked_post = UserHasLikedPost.objects.get(user = user_profile, post = post)
-    except UserHasLikedPost.DoesNotExist:
-        has_user_liked_post = False
-    else:
-        has_user_liked_post = True
-    try:
-        has_user_liked_comment = UserHasLikedComment.objects.get(user = user_profile, comment = comment)
-    except UserHasLikedComment.DoesNotExist:
-        has_user_liked_comment = False
-    else:
-        has_user_liked_comment = True
-
-    context_dict = {'post': post, 'comment': comment, 'user': current_user, 'post_user': post_user,
-                    'user_profile': user_profile,
+        post = Post.objects.get(post_id=post_id)
+        post_user = UserProfile.objects.get(user = post.user)
+    
+        try:
+            comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted','-time_posted')[0]
+        except:
+            comment = None
+        try:
+            has_user_liked_post = UserHasLikedPost.objects.get(user = user, post = post)
+        except UserHasLikedPost.DoesNotExist:
+            has_user_liked_post = False
+        else:
+            has_user_liked_post = True
+        try:
+            has_user_liked_comment = UserHasLikedComment.objects.get(user = user, comment = comment)
+        except UserHasLikedComment.DoesNotExist:
+            has_user_liked_comment = False
+        else:
+            has_user_liked_comment = True
+        context_dict = {'post': post, 'comment': comment, 'post_user': post_user,
                     'user_has_liked_post': has_user_liked_post,
-                    'user_has_liked_comment': has_user_liked_comment}
+                    'user_has_liked_comment': has_user_liked_comment,}
+    except:
+        post_exists = False
+
+    context_dict['userprofile'] = user
+    context_dict['post_exists'] = post_exists
 
     return context_dict
 def view_individual_post(request, post_id):
 
     context_dict = get_view_post_context_dict(request, post_id)
-
-    url = 'thepetproject/view_individual_post.html'
-    return render(request, url , context = context_dict)
+    return render(request, 'thepetproject/view_individual_post.html' , context = context_dict)
 
 def create_comment(request, post_id):
 
@@ -156,7 +157,7 @@ def profile_page(request, username=None):
 @login_required
 def upload_post_page(request):
     submitted = False
-    
+    userprofile = UserProfile.objects.get(user=request.user)
     if request.method =="POST":
         form = UploadPostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -168,14 +169,14 @@ def upload_post_page(request):
             post.time_posted = datetime.now().time()
             post.save()
             submitted=True
-            return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted})
+            return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted, 'userprofile':userprofile})
         else:
             print(form.errors)
         
     else:
         form = UploadPostForm
 
-    return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted})
+    return render(request, 'thepetproject/upload_post.html', {'form':form, 'submitted':submitted, 'userprofile':userprofile})
  
 @login_required      
 def my_account(request):

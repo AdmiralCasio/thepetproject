@@ -8,93 +8,11 @@ View Post
     {% endblock %}
 
     {% block embedded-js %}
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-
-        function likeButtonFormatting(buttonToEdit, isUnlike){
-            if (isUnlike){
-                $(buttonToEdit).css("background-color", "#236807");
-                $(buttonToEdit).css("color", "white");
-                $(buttonToEdit).css("border-color", "white");
-            }
-            else{
-                $(buttonToEdit).css("background-color", "red");
-                $(buttonToEdit).css("color", "white");
-                $(buttonToEdit).css("border-color", "white");
-
-            }
-        }
-
-        function like(postOrCommentID, isPost, isUnlike){
-            // Multiple arguments in url code found at: https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
-            var newLikes = 0;
-            var oldLikes = 0;
-            var checkLikes = 0;
-            if (isPost){
-                var like_url = "{% url 'thepetproject:like_post' post.post_id %}";
-                var buttonToEdit = "#like_post";
-            }
-            else{
-                var like_url = "{% url 'thepetproject:like_comment' post_id=post.post_id comment_id=comment.comment_id %}"
-                var buttonToEdit = "#like_comment_button"
-            }
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", like_url, true);
-            xhttp.send();
-            if (isPost){
-                xhttp.onreadystatechange = function(){
-                    if(this.readyState == 4 && this.status == 200){
-                    likesJSON = JSON.parse(this.responseText);
-                    newLikes = likesJSON.likes.new;
-                    oldLikes = likesJSON.likes.old;
-                    var textToEdit = "#like_and_comment_info_output";
-                    var newText = "{{ post.number_of_comments }} comments     " + newLikes + " likes";
-                    $(textToEdit).text(newText);
-                    checkLikes = oldLikes - 1
-                    if (newLikes == checkLikes && isUnlike == false){
-                        isUnlike = true;
-                    }
-                    else if (newLikes != checkLikes && isUnlike == true){
-                        isUnlike = false;
-                    }
-                    likeButtonFormatting(buttonToEdit, isUnlike);
-                }
-            };
-        }
-        else{
-            newLikes = xhttp.onreadystatechange = function(){
-                if(this.readyState == 4 && this.status == 200){
-                    likesJSON = JSON.parse(this.responseText);
-                    newLikes = likesJSON.likes.new;
-                    oldLikes = likesJSON.likes.old;
-                    var textToEdit = "#comment_likes";
-                    var newText = newLikes + " likes";
-                    $(textToEdit).text(newText);
-                    checkLikes = oldLikes - 1
-                    if (newLikes == checkLikes && isUnlike == false){
-                        isUnlike = true;
-                    }
-                    else if (newLikes != checkLikes && isUnlike == true){
-                        isUnlike = false;
-                    }
-                    likeButtonFormatting(buttonToEdit, isUnlike);
-                }
-            };
-        }
-
-    }
-    
-        function commentPost(post_id){
-            //location.href found at: https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page
-            var redirectURL = "{% url 'thepetproject:create_comment' post.post_id %}";
-            location.href= redirectURL;
-        }
-    </script>
+    <script type="text/javascript" src="{% static 'view_individual_post_page.js' %}"></script>
     {% endblock %}
 
     {% block main_content %}
+    {% if post_exists %}
     <div id = "post">
         <div id="title_and_image">
         <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
@@ -105,9 +23,9 @@ View Post
         <div id="like_and_comment">
             {% if user.is_authenticated %}
                 {% if user_has_liked_post %}
-                <button id="like_post" onclick="like('{{ post.post_id }}', true, true)" style="background-color: red;">Like</button>
+                <button id="like_post" onclick="like('{{ post.post_id }}', true, true, {{ post.likes }}, {% url 'thepetproject:like_post' post.post_id %}, {{ post.number_of_comments }})" style="background-color: red;">Like</button>
                 {% else %}
-                <button id="like_post" onclick="like('{{ post.post_id }}', true, false)">Like</button>
+                <button id="like_post" onclick="like('{{ post.post_id }}', true, false, {{ post.likes }}, {% url 'thepetproject:like_post' post.post_id %}, {{ post.number_of_comments }})">Like</button>
                 {% endif %}
             <button id="comment_post" onClick="commentPost('{{ post.post_id }}')">Comment</button>
             {% endif %}
@@ -118,7 +36,7 @@ View Post
 </div>
     <div id="comments_section">
         <h1>Comments</h1>
-        {% if comment != -1 %}
+        {% if comment %}
         <div id="comment_info">
          <p id="user_info">{{ comment.user.name }} (<a href="{% url 'thepetproject:profile_page' comment.user %}">@{{ comment.user }}</a>)</p>
             <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
@@ -129,9 +47,9 @@ View Post
         <div id = "like_comment">
             {% if user.is_authenticated %}
                 {% if user_has_liked_comment %}
-                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, true)" style="background-color: red;">Like</button>
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, true, {{ comment.likes }}, {% url 'thepetproject:like_comment' comment.comment_id %},  0)" style="background-color: red;">Like</button>
                 {% else %}
-                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, false)">Like</button>
+                    <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, false, {{ comment.likes }}, {% url 'thepetproject:like_comment' comment.comment_id %}, 0)">Like</button>
                 {% endif %}
             {% endif %}
             <p id="comment_likes">{{ comment.likes }} likes<p>
@@ -139,4 +57,7 @@ View Post
         {% endif %}
     </div>
     <h1> {{ liked_comment.comment_id }}</h1>
+    {% else %}
+        <strong>That post does not exist.</strong>
+    {% endif %}
 {% endblock %}
