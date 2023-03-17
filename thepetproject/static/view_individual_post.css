@@ -17,7 +17,9 @@
 }
 #title_and_image img{max-height:100%;
                     max-width:100%;
-                    height:50vh;}
+                    height:50vh;
+                    margin-top: 1%;
+                    margin-bottom: 1%;}
 #like_and_comment{
     border-color: black;
     border-left-style: none;
