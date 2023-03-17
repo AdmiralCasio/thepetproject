@@ -104,7 +104,7 @@ View Post
         <h1>Comments</h1>
         {% if comment != "none" %}
         <div id="comment_info">
-         <p id="user_info">{{ comment.user.name }} (@ {{ comment.user }})</p>
+         <p id="user_info">{{ comment.user.name }} (<a href="{% url 'thepetproject:profile_page' comment.user %}">@{{ comment.user }}</a>)</p>
             <p id="time_info">{{ comment.date_posted }} {{ comment.time_posted }}</p>
         </div>
         <div id="comment_text">

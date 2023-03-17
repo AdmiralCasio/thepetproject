@@ -67,9 +67,12 @@ def get_view_post_context_dict(request, post_id):
     try:
         comment = Comment.objects.filter(post_id = post_id).order_by('-date_posted').order_by('-time_posted')[0]
     except:
-        comment = "none"
-    current_user = request.user
-    user_profile = UserProfile.objects.get(user = current_user)
+        comment = None
+    try:
+        current_user = request.user
+        user_profile = UserProfile.objects.get(user = current_user)
+    except:
+        user_profile = None;
     try:
         has_user_liked_post = UserHasLikedPost.objects.get(user = user_profile, post = post)
     except UserHasLikedPost.DoesNotExist:
@@ -136,8 +139,8 @@ def profile_page(request, username=None):
                 username = request.user.username
         
         userprofile_page = UserProfile.objects.get(user=User.objects.get(username=username))
-        posts = Post.objects.filter(user=userprofile).order_by('-date_posted').order_by('-time_posted')[:3]
-        comments = Comment.objects.filter(user=userprofile).order_by('-likes')[:3]
+        posts = Post.objects.filter(user=userprofile_page).order_by('-date_posted', '-time_posted')[:3]
+        comments = Comment.objects.filter(user=userprofile_page).order_by('-likes')[:3]
         
         context_dict['userprofile_page'] = userprofile_page
         context_dict['recent_posts'] = posts
@@ -245,3 +248,16 @@ def register(request):
     return render(request, 'thepetproject/sign-up.html', {'user_form': user_form,
                                                    'profile_form': profile_form,
                                                    'registered': registered})
+
+def view_posts(request):
+    user_profile = None
+    post_list = Post.objects.all()
+    try:
+        if request.user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        print("Error")
+    context_dict = {}
+    context_dict['posts'] = post_list
+    context_dict['userprofile'] = user_profile
+    return render(request, 'thepetproject/view_posts.html', context=context_dict)
