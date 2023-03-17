@@ -3,9 +3,13 @@
     display: block;
 }
 #success-block{
-    display:block
     margin: auto;
     width: 50%;
+    padding: 10px;
+}
+#success-block h1{
+    text-align: center;
+    display: block;
 }
 #caption-style{
     width=50%;

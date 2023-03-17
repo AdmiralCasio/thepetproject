@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404
 from thepetproject.models import UserProfile, Post, Comment
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .forms import UploadPostForm
 from datetime import date,datetime
@@ -32,6 +33,7 @@ def profile_page(request, username=None):
     
     return render(request, 'thepetproject/profile_page.html', context=context_dict)
 
+@login_required
 def upload_post_page(request):
     submitted = False
     
