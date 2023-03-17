@@ -28,6 +28,8 @@
     border-bottom-style: none;
     display:flex;
 }
+#like_and_comment_info {margin-left: 65%;}
+
 #like_and_comment_info{
     float: right;
     margin-right: 10px;
@@ -77,6 +79,8 @@
 #comment_text p{
     margin-left: 1%
 }
+#comment_likes{margin-left: 80%;}
+
 #comment_form{
     display: none;
 }
