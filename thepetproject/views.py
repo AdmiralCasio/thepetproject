@@ -31,6 +31,7 @@ def like_comment(request, post_id, comment_id):
     user_profile = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(post_id=post_id)
     comment = Comment.objects.get(comment_id=comment_id)
+    old_likes = comment.likes
     user_likes_comment_instance = UserHasLikedComment.objects.get_or_create(comment=comment, user=user_profile)
     if user_likes_comment_instance[1]:
         comment.likes += 1
@@ -40,7 +41,7 @@ def like_comment(request, post_id, comment_id):
         comment.save()
         user_likes_comment_instance[0].delete()
 
-    response = {"likes": str(comment.likes)}
+    response = {"likes": {"new" : str(comment.likes), "old": str(old_likes)}}
     return JsonResponse(response)
 
 def like_post(request, post_id):
@@ -48,6 +49,7 @@ def like_post(request, post_id):
     # .delete() found at: https://stackoverflow.com/questions/3805958/how-to-delete-a-record-in-django-models
     user_profile = UserProfile.objects.get(user = request.user)
     post = Post.objects.get(post_id=post_id)
+    old_likes = post.likes
     user_likes_post_instance = UserHasLikedPost.objects.get_or_create(post = post, user = user_profile)
     if user_likes_post_instance[1]:
         post.likes += 1
@@ -57,7 +59,7 @@ def like_post(request, post_id):
         post.save()
         user_likes_post_instance[0].delete()
 
-    response = {"likes": str(post.likes)}
+    response = {"likes": {"new" : str(post.likes), "old": str(old_likes)}}
     return JsonResponse(response)
 
 def get_view_post_context_dict(request, post_id):
