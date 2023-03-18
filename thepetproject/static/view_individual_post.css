@@ -14,10 +14,11 @@
     display:flex;
     justify-content:center;
     align-items:center;
+    
 }
 #title_and_image img{max-height:100%;
                     max-width:100%;
-                    height:50vh;
+                    max-height:50vh;
                     margin-top: 1%;
                     margin-bottom: 1%;}
 #like_and_comment{

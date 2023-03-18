@@ -25,7 +25,7 @@
             </div>
 
             <section id="profile-posts-comments-container">
-            <h2>Recent Posts</h2> <a href="{% url 'thepetproject:user_posts' userprofile_page.user.username %}">View All</a>
+            <h2>Recent Posts</h2> {% if recent_posts %}<a href="{% url 'thepetproject:user_posts' userprofile_page.user.username %}">View All</a>{% endif %}
                 <div id="profile-recent-posts">
                         {% if recent_posts %}
                         {% for post in recent_posts %}
