@@ -239,11 +239,11 @@ def my_account(request):
             elif request.POST.get('type') == 'password':
                 user.user.set_password(request.POST.get('password'))
                 user.user.save()
-                return HttpResponse({'status':1})
+                return JsonResponse({'success':'true'})
             elif request.POST.get('type') == 'name':
                 user.name = request.POST.get('name')
                 user.save()
-                return HttpResponse({'status':1}) 
+                return JsonResponse({'success':'true', 'new_name':request.POST.get('name')}) 
             elif request.POST.get('type') == 'delete':
                 print("Deleting...")
                 User.objects.get(username=request.user.username).delete()
@@ -274,7 +274,7 @@ def user_login(request):
                 return HttpResponse("Your account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied. <a href=" + reverse("thepetproject:login") + ">Go back</a>")
+            return HttpResponse("<title>Login Failed</title>Invalid login details supplied. <a href=" + reverse("thepetproject:login") + ">Go back</a>")
     else:
         return render(request, 'thepetproject/login.html')
 
@@ -319,7 +319,7 @@ def register(request):
 
 def view_posts(request):
     user_profile = None
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().order_by("-date_posted", "-time_posted")
     try:
         if request.user.is_authenticated:
             user_profile = UserProfile.objects.get(user=request.user)

@@ -15,9 +15,15 @@ $(document).ready(function(){
             'csrfmiddlewaretoken':csrfmiddlewaretoken,
             'type':'password',
             'password':$('#passwordentry input').val()
-        }).done(function(){
+        }, function(data){
             $('#passwordentry input').val("");
-        })
+            if (data.success){
+                alert("Password Changed!");
+            }
+            else{
+                alert("Could not change password!");
+            }
+        }, 'json')
     });
 
     $("#nameentry button").click(function(){
@@ -26,8 +32,15 @@ $(document).ready(function(){
             'type':'name',
             'name':$('#nameentry input').val()
         }, function(data){
-            location.reload();
-        });
+            if (data.success){
+                $("#name").text(data.new_name);
+                $("#nameentry input").val("")
+            }
+            else{
+                alert("Name change was unsuccessful!");
+            }
+            
+        }, 'json');
     });
 
     $("#delete-account").click(function(){
