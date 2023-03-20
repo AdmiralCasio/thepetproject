@@ -29,20 +29,16 @@ class Post(models.Model):
     def get_correct_directory(self, filename):
         return os.path.join(self.user.user.username, 'posts', filename)
     
-    image = models.ImageField(blank=False, upload_to=get_correct_directory, default='default-profile.jpg')
+    image = models.ImageField(blank=False, upload_to=get_correct_directory)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date_posted = models.DateField()
     time_posted = models.TimeField()
     likes = models.IntegerField(default=0)
     number_of_comments = models.IntegerField(default=0)
     
-    
     def __str__(self):
         return str(self.post_id)
     
-    
-    image = models.ImageField(blank=False, upload_to='media/')
-
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     text = models.CharField(max_length=1000)
