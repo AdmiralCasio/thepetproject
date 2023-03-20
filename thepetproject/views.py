@@ -62,6 +62,23 @@ def like_post(request, post_id):
     response = {"likes": {"new" : str(post.likes), "old": str(old_likes)}}
     return JsonResponse(response)
 
+def delete_post(request, post_id):
+    user_profile = UserProfile.objects.get(user=request.user)
+    post = Post.objects.get(post_id=post_id)
+
+    deleted = True
+    if user_profile == post.user:
+        try:
+            Post.objects.filter(post_id=post_id).delete()
+            # Delete file in media root
+            os.remove(os.path.join(settings.MEDIA_ROOT, post.image.name))
+
+        except Exception:
+            # If an error occurs, we want the user to know the post was not deleted
+            deleted = False
+
+    return JsonResponse({"success": deleted})
+
 def get_view_post_context_dict(request, post_id):
     post_exists = True
     context_dict = {}
@@ -96,6 +113,7 @@ def get_view_post_context_dict(request, post_id):
 
     context_dict['userprofile'] = user
     context_dict['post_exists'] = post_exists
+    print(context_dict)
 
     return context_dict
 def view_individual_post(request, post_id):

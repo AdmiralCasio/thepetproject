@@ -1,4 +1,26 @@
 
+
+    function delete_post(button, post_id, url, redirect) {
+        // Get confirmation incase user clicked it accidentally
+        if (confirm("Are you sure you want to delete this post?")) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
+            xhttp.send();
+
+            xhttp.onreadystatechange = function(){
+                if (this.readyState === 4 && this.status === 200) {
+                    let response = JSON.parse(this.responseText);
+                    // If post was deleted, inform user and redirect them to the home page
+                    if (response['success']) {
+                        confirm("Post deleted")
+                        location.href = redirect;
+                    } else {
+                        confirm("Error when trying to delete post.")
+                    }
+                }
+            };
+        }
+    }
         
     function likeButtonFormatting(buttonToEdit, isUnlike){
         
@@ -50,27 +72,27 @@
                 likeButtonFormatting(buttonToEdit, isUnlike);
             }
         };
-    }
-    else{
-        xhttp.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                likesJSON = JSON.parse(this.responseText);
-                newLikes = likesJSON.likes.new;
-                oldLikes = likesJSON.likes.old;
-                var textToEdit = "#comment_likes";
-                var newText = newLikes + " likes";
-                $(textToEdit).text(newText);
-                checkLikes = oldLikes - 1
-                if (newLikes == checkLikes && isUnlike == false){
-                    isUnlike = true;
+        }
+        else{
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    likesJSON = JSON.parse(this.responseText);
+                    newLikes = likesJSON.likes.new;
+                    oldLikes = likesJSON.likes.old;
+                    var textToEdit = "#comment_likes";
+                    var newText = newLikes + " likes";
+                    $(textToEdit).text(newText);
+                    checkLikes = oldLikes - 1
+                    if (newLikes == checkLikes && isUnlike == false){
+                        isUnlike = true;
+                    }
+                    else if (newLikes != checkLikes && isUnlike == true){
+                        isUnlike = false;
+                    }
+                    likeButtonFormatting(buttonToEdit, isUnlike);
                 }
-                else if (newLikes != checkLikes && isUnlike == true){
-                    isUnlike = false;
-                }
-                likeButtonFormatting(buttonToEdit, isUnlike);
-            }
-        };
-    }
+            };
+        }
         likeButtonFormatting(buttonToEdit, isUnlike);
     }
 
