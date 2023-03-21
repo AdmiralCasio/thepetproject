@@ -18,6 +18,7 @@ View Post
             {% if userprofile == post_user %}
             <button id="delete-post" onclick="delete_post(this, '{{ post.post_id }}', '{% url 'thepetproject:delete_post' post.post_id %}', '{% url 'thepetproject:index' %}')">Delete Post</button>
             {% endif %}
+            Posted By: <a id="post_user" href="{% url 'thepetproject:profile_page' post.user %}">@{{ post.user }}</a>
         </div>
         <div id="title_and_image">
         <img src="{{ MEDIA_URL }}{{ post.image }}" alt="{{ post.image }}">
