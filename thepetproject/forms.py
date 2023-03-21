@@ -25,6 +25,7 @@ class ChangeProfilePictureForm(forms.ModelForm):
 class CreateCommentForm(forms.ModelForm):
     #code for date found at: https://www.geeksforgeeks.org/datefield-django-models/
     #code for time found at: https://www.geeksforgeeks.org/timefield-django-models/
+    #code for default time found at: https://stackoverflow.com/questions/415511/how-do-i-get-the-current-time
 
 
     text = forms.CharField(max_length = 1000, help_text="Your comment:")
