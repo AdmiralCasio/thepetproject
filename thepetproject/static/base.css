@@ -4,12 +4,12 @@ header{
     background-color: var(--background_green);
     display: inline-block;
     height: 100%;
-    width: 100%;
+    width: 98%;
     color: white;
     padding: 10px;
     border-radius: 10px;
     vertical-align:middle;
-}
+}  
 
 #login {
     margin: 20px;
