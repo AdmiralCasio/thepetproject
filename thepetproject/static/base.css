@@ -56,17 +56,16 @@ header #heading h1{
 
 .sidebar {
     background-color: var(--background_green);
-    width: fit-content;
+    width: fit-content !important;
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 10px;
-    display:none;
+    display:none; 
     z-index: 1;
     height: fit-content;
     overflow-x:hidden;
     margin-top:5px;
     text-align:center;
-    
 }
 
 button:hover{
