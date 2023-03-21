@@ -6,6 +6,7 @@
         <title>The Pet Project - {% block title_append %} Page name goes here {% endblock %}</title>
         <link rel="stylesheet" href="{% static 'base.css' %}" type="text/css"/>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'base.js' %}"></script>
         {% block embedded-css %}
         {% endblock %}
         {% block embedded-js %}
@@ -26,6 +27,7 @@
             </div>
         </header>
         <section id="sidebar-main-content">
+            <img id = "sidebar-icon" src="{% static 'sidebar-2.png' %}"></img>
             <div class="sidebar">
                 <ul>
                     <li><a href="{% url 'thepetproject:index' %}"><button type="button">Homepage</button></a></li>
