@@ -1,5 +1,9 @@
+
 {% extends 'thepetproject/base.html' %}
 {% load staticfiles %}
+
+{% comment %} From 'Tango With Django' {% endcomment %}
+
 {% block main_content %}
 <h1>Login to The Pet Project</h1>
 <form id="login_form" method="post" action="{% url 'thepetproject:login' %}">

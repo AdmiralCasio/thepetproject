@@ -259,7 +259,8 @@ def my_account(request):
         return render(request, 'thepetproject/my-account.html', context=context_dict)
     except:
         return redirect(reverse('thepetproject:index'))
-                
+ 
+#From 'Tango With Django'    
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -284,6 +285,7 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('thepetproject:index'))
 
+#From 'Tango With Django'
 def register(request):
     registered = False
     
