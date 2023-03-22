@@ -3,21 +3,19 @@
     border: 2px black solid;
     height: fit-content;
     padding: 5px;
-    width: 1300px ;
+    width: 98%;
 }
 
 .pic{
     height: 300px;
     width: 300px;
     object-fit: contain;
-    margin-right: 40px;
     border-right: 2px black solid;
 }
 
 .grid{
     display: grid;
     float: right;
-    margin-right: 400px;
 }
 .name{
     grid-row-start:1 ;
