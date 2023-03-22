@@ -247,6 +247,8 @@ def my_account(request):
                 print("Deleting...")
                 User.objects.get(username=request.user.username).delete()
                 print("Deleted")
+                return redirect(reverse('thepetproject:index'))
+                
                 
         else:
             form = ChangeProfilePictureForm()
