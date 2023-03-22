@@ -231,7 +231,7 @@ def my_account(request):
                 form = ChangeProfilePictureForm(request.POST, request.FILES, instance=user)
                 if form.is_valid():
                     image_path = os.path.join(settings.MEDIA_DIR, user.user.username, image_path_list[-1])
-                    if os.path.exists(image_path):
+                    if os.path.exists(image_path) and "default-profile.jpg" not in image_path:
                         os.remove(image_path)
                     form.save()
                 else:
