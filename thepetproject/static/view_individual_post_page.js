@@ -102,3 +102,18 @@
         location.href= redirectURL;
     }
 
+    $(document).ready(function(){
+        var darken = $(".darken");
+        var info = $("#more_like_info");
+        $("#like_and_comment_info_output").click(function(event){
+            info.css("visibility", "visible");
+            darken.css("filter", "brightness(50%)");
+        })
+
+        $(darken).click(function(event){
+            if (event.target.id != "like_and_comment_info_output"){
+                info.css("visibility", "hidden");
+                darken.css("filter", "brightness(100%)");
+            }
+        })
+    })

@@ -12,6 +12,7 @@ View Post
     {% endblock %}
 
     {% block main_content %}
+    <span class="darken">
     {% if post_exists %}
     <div id = "post">
         <div>
@@ -66,4 +67,15 @@ View Post
     {% else %}
         <strong>That post does not exist.</strong>
     {% endif %}
+</span>
+    <div id="more_like_info">
+        <h3>
+            Liked By:
+        </h3>
+        <ul>
+            {% for liker in liked_by %}
+                <li><a href="{% url 'thepetproject:profile_page' liker.user %}">{{ liker.user }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
