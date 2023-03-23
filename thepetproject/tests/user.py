@@ -6,8 +6,10 @@ from django.urls import reverse
 
 from thepetproject.models import UserProfile
 from thepetproject.forms import UserForm, UserProfileForm
+from .test_utils import create_user, login_client
 
 
+# Tests for functionality related to users
 # The below was used thoroughly throughout the making of this file
 # https://docs.djangoproject.com/en/4.1/topics/testing/
 class UserTestCase(TestCase):
@@ -18,35 +20,17 @@ class UserTestCase(TestCase):
         self.password = "TestUserPassword"
         self.client = Client()
 
-        user_data = {
-            "username": self.username,
-            "name": self.name,
-            "password": self.password
-            }
-
-        user = UserForm(user_data).save()
-        user.set_password("TestUserPassword")
-        user.save()
-
-        profile = UserProfileForm(user_data).save(commit=False)
-        profile.user = user
-        profile.date_joined = date.today()
-        profile.save()
+        # Create user
+        create_user(self.username, self.name, self.password)
 
     def test_login(self):
         # Test login of user created in setUp()
-        # Set up dict for login
-        request_dict = {
-            "username": self.username,
-            "password": self.password
-        }
-
         # Test client is not authenticated yet
         user = auth.get_user(self.client)
         self.assertTrue(not user.is_authenticated)
 
         # Login with test user created in setup
-        self.client.post(reverse('thepetproject:login'), request_dict)
+        login_client(self.username, self.password, self.client)
 
         # Test client is now authenticated
         user = auth.get_user(self.client)
@@ -54,14 +38,8 @@ class UserTestCase(TestCase):
 
     def test_logout(self):
         # Test logout of user created in setUp()
-        # Set up dict for login
-        request_dict = {
-            "username": self.username,
-            "password": self.password
-        }
-
         # Login with test user created in setup
-        self.client.post(reverse('thepetproject:login'), request_dict)
+        login_client(self.username, self.password, self.client)
 
         # Test client is authenticated
         user = auth.get_user(self.client)
@@ -72,16 +50,12 @@ class UserTestCase(TestCase):
 
         # Check client was logged out
         user = auth.get_user(self.client)
-        self.assertTrue(not user.is_authenticated)
+        self.assertFalse(user.is_authenticated)
 
     def test_delete_user(self):
         # Test deletion of user created in setUp()
         # Login as test user
-        request_dict = {
-            "username": self.username,
-            "password": self.password
-        }
-        self.client.post(reverse('thepetproject:login'), request_dict)
+        login_client(self.username, self.password, self.client)
 
         # Delete the user
         self.client.post(reverse('thepetproject:myaccount'), {"type": "delete"})
@@ -107,3 +81,22 @@ class UserTestCase(TestCase):
 
     def test_change_password(self):
         pass
+        # Login user
+        login_client(self.username, self.password, self.client)
+
+        # Change password
+        self.client.post(reverse("thepetproject:myaccount"), {"type": "password", "password": "iamanewpassword"})
+
+        # Logout
+        self.client.post(reverse("thepetproject:logout"))
+
+        # Check we were logged out
+        user = auth.get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+
+        # Login in again
+        login_client(self.username, "iamanewpassword", self.client)
+
+        # Check we were logged in again
+        user = auth.get_user(self.client)
+        self.assertTrue(user.is_authenticated)

@@ -6,8 +6,10 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 from thepetproject.forms import UserForm, UserProfileForm
 from thepetproject.models import Post, Comment, User
+from .test_utils import create_user, login_client
 
 
+# Tests for functionality related to posts
 # The below docs were used thoroughly throughout the making of this file
 # https://docs.djangoproject.com/en/4.1/topics/testing/
 class PostTestCase(TestCase):
@@ -19,24 +21,10 @@ class PostTestCase(TestCase):
         self.client = Client()
 
         # Create user
-        user_data = {
-            "username": self.username,
-            "name": self.name,
-            "password": self.password
-        }
-
-        user = UserForm(user_data).save()
-        user.set_password("TestUserPassword")
-        user.save()
-
-        profile = UserProfileForm(user_data).save(commit=False)
-        profile.user = user
-        profile.date_joined = date.today()
-        profile.save()
+        create_user(self.username, self.name, self.password)
 
         # Login to user
-        user_data.pop("name")
-        self.client.post(reverse('thepetproject:login'), user_data)
+        login_client(self.username, self.password, self.client)
 
     def test_create_post(self):
         # Prep dict
