@@ -43,6 +43,20 @@ $(document).ready(function(){
         }, 'json');
     });
 
+    $("#remove_picture").click(function(){
+        $.post('',{
+            'csrfmiddlewaretoken':csrfmiddlewaretoken,
+            'type':'remove'
+        }, function(data){
+            if (data.success){
+                location.reload();
+            }
+            else{
+                alert("Profile picture change unsuccessful!");
+            }
+        })
+    })
+
     $("#delete-account").click(function(){
         if (window.confirm("Are you sure you want to delete your account? All of your data - posts, profile and comments - will be lost.")){
             $.post("",{
