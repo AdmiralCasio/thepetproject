@@ -1,0 +1,15 @@
+#login_form_div{
+    position: fixed;
+    top:40%;
+    left:36%;
+    text-align: center;
+}
+
+#login_form{
+    color:#236807;
+
+}
+
+#login_form input{
+    margin:4px;
+}

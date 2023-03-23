@@ -1,15 +1,21 @@
 
 {% extends 'thepetproject/base.html' %}
 {% load staticfiles %}
-
+{% block embedded-css %}
+    <link rel="stylesheet" href="{% static 'login.css' %}" type="text/css"></link>
+{% endblock %}
 {% comment %} From 'Tango With Django' {% endcomment %}
 
 {% block main_content %}
+<div id="login_form_div">
 <h1>Login to The Pet Project</h1>
 <form id="login_form" method="post" action="{% url 'thepetproject:login' %}">
     {% csrf_token %}
-    Username: <input type="text" name="username" value="" size="50" /> <br/>
-    Password: <input type="password" name="password" value="" size="50" /><br/>
-    <input type="submit" value="submit" />
+    Username</br>
+    <input type="text" name="username" value="" size="50" /> <br/>
+    Password</br>
+    <input type="password" name="password" value="" size="50" /><br/>
+    <input type="submit" value="Login" />
 </form>
+</div>
 {% endblock %}

@@ -1,0 +1,20 @@
+#register{
+    position: fixed;
+    top:30%;
+    left:26%;
+    text-align: center;
+}
+
+#user_form{
+    color: #236807;
+}
+
+
+#user_form input{
+    margin:4px;
+
+}
+
+#login-link{
+    color:grey;
+}
