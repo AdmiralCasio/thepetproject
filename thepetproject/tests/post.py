@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 from thepetproject.forms import UserForm, UserProfileForm
 from thepetproject.models import Post, Comment, User
-from .test_utils import create_user, login_client
+from .test_utils import create_user, login_client, create_post
 
 
 # Tests for functionality related to posts
@@ -27,17 +27,8 @@ class PostTestCase(TestCase):
         login_client(self.username, self.password, self.client)
 
     def test_create_post(self):
-        # Prep dict
-        with open(path.join(path.dirname(__file__), "cat.jpg"), 'rb') as file:
-            image = file.read()
-
-        post_dict = {
-            "caption": ['this is a post'],
-            "image": [SimpleUploadedFile("cat.jpg", image, content_type="image/jpeg")]
-        }
-
         # Create post
-        self.client.post(reverse('thepetproject:upload_post_page'), post_dict)
+        create_post(path.join(path.dirname(__file__), "cat.jpg"), 'this is a post', self.client)
 
         # Check post was created
         self.assertEqual(len(Post.objects.all()), 1)
