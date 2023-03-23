@@ -37,7 +37,7 @@ View Post
             <button id="comment_post" onClick="commentPost('{{ post.post_id }}', '{% url 'thepetproject:create_comment' post.post_id %}')">Comment</button>
             {% endif %}
         <div id="like_and_comment_info">
-            <p id="like_and_comment_info_output">{{ post.number_of_comments }} comments     {{ post.likes }} likes</p>
+            <p id="like_and_comment_info_output">{{ post.number_of_comments }} comments     {{ post.likes }}  like{{ post.likes|pluralize }}</p>
     </div>
 </div>
 </div>

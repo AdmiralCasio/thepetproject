@@ -93,8 +93,9 @@
     background-color: white;
     color:green;
     width:50%;
-    height: 50%;
+    height: fit-content;
     padding: 10px;
     border-radius: 10px;
     visibility: hidden;
+    border-style:solid;
 }

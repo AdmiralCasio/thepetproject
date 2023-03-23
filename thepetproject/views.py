@@ -110,7 +110,7 @@ def get_view_post_context_dict(request, post_id):
                     'user_has_liked_comment': has_user_liked_comment,}
     except:
         post_exists = False
-    context_dict['liked_by'] = UserHasLikedPost.objects.filter(post=post)
+    context_dict['liked_by'] = UserHasLikedPost.objects.filter(post=post_id)
     context_dict['userprofile'] = user
     context_dict['post_exists'] = post_exists
 
@@ -230,7 +230,7 @@ def my_account(request):
                 form = ChangeProfilePictureForm(request.POST, request.FILES, instance=user)
                 if form.is_valid():
                     image_path = os.path.join(settings.MEDIA_DIR, user.user.username, image_path_list[-1])
-                    if os.path.exists(image_path):
+                    if os.path.exists(image_path) and "default-profile.jpg" not in image_path:
                         os.remove(image_path)
                     form.save()
                 else:
