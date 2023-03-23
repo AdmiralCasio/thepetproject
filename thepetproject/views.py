@@ -113,7 +113,6 @@ def get_view_post_context_dict(request, post_id):
     context_dict['liked_by'] = UserHasLikedPost.objects.filter(post=post)
     context_dict['userprofile'] = user
     context_dict['post_exists'] = post_exists
-    print(context_dict)
 
     return context_dict
 def view_individual_post(request, post_id):
