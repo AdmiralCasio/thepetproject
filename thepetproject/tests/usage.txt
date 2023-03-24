@@ -1,0 +1,4 @@
+# You should be in the directory containing manage.py
+# python manage.py test thepetproject.tests.post
+# python manage.py test thepetproject.tests.user
+# python manage.py test thepetproject.tests.url

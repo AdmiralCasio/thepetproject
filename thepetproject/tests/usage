@@ -1,1 +1,0 @@
-python manage.py test thepetproject.tests.[test to run]
