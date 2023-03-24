@@ -63,6 +63,7 @@ def like_post(request, post_id):
     return JsonResponse(response)
 
 def delete_post(request, post_id):
+    # JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
     user_profile = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(post_id=post_id)
 
@@ -83,7 +84,7 @@ def get_view_post_context_dict(request, post_id):
     post_exists = True
     context_dict = {}
     user = None
-    if request.user.is_authenticated:
+    if request.user.is_authenticated:# Found in 'Tango with Django 2' textbook on page 168
         user = UserProfile.objects.get(user=request.user)  
     try:
         post = Post.objects.get(post_id=post_id)
