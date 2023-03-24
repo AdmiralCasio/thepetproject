@@ -108,7 +108,15 @@
          "number_of_comments":0,
          "time_posted":"13:02:12",
          "image":"parrot.jpg",
-         "posted_by":"catlover5"}
+         "posted_by":"catlover5"},
+         {"caption":"look at this guy",
+         "date_posted":"2023-04-06",
+         "time_posted":"13:02:12",
+         "liked_by":[],
+         "likes":0,
+         "number_of_comments":0,
+         "posted_by":"yecats",
+         "image":"post-2.webp"}
     ],
 
     [
