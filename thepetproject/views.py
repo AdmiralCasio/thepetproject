@@ -63,6 +63,7 @@ def like_post(request, post_id):
     return JsonResponse(response)
 
 def delete_post(request, post_id):
+    # JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
     user_profile = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(post_id=post_id)
 
