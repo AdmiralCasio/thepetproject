@@ -26,7 +26,7 @@ header #heading h1{
     width: 22%;
     float:left;
     border-color: white;
-    border-style: solid;
+    border-style: solid;/*border style properties and values found at: https://www.w3schools.com/css/css_border.asp */
     vertical-align:middle;
     text-align:center;
     overflow:hidden}
