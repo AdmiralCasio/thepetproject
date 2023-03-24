@@ -28,7 +28,7 @@ View Post
             <p>{{ post.caption }}</p>
         </div>
         <div id="like_and_comment">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated %}<!--Found in 'Tango with Django 2' textbook on page 168-->
                 {% if user_has_liked_post %}
                 <button id="like_post" onclick="like('{{ post.post_id }}', true, true, {{ post.likes }}, '{% url 'thepetproject:like_post' post.post_id %}', {{ post.number_of_comments }})" style="background-color: red;">Like</button>
                 {% else %}
@@ -52,7 +52,7 @@ View Post
         <p>{{ comment.text }}</p>
         </div>
         <div id = "like_comment">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated %}<!--Found in 'Tango with Django 2' textbook on page 168-->
                 {% if user_has_liked_comment %}
                     <button id="like_comment_button" onclick="like('{{ comment.comment_id }}', false, true, {{ comment.likes }}, '{% url 'thepetproject:like_comment' post.post_id comment.comment_id %}',  0)" style="background-color: red;">Like</button>
                 {% else %}

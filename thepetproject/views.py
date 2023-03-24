@@ -46,7 +46,7 @@ def like_comment(request, post_id, comment_id):
 
 def like_post(request, post_id):
     #JsonResponse found at: https://docs.djangoproject.com/en/4.1/ref/request-response/
-    # .delete() found at: https://stackoverflow.com/questions/3805958/how-to-delete-a-record-in-django-models
+    #.delete() found at: https://stackoverflow.com/questions/3805958/how-to-delete-a-record-in-django-models
     user_profile = UserProfile.objects.get(user = request.user)
     post = Post.objects.get(post_id=post_id)
     old_likes = post.likes
